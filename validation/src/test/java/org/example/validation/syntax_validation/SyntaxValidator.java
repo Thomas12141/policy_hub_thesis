@@ -2,22 +2,31 @@ package org.example.validation.syntax_validation;
 
 import com.networknt.schema.*;
 import org.example.validation.Type;
-import org.example.validation.Validatior;
+import org.example.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-public class SyntaxValidator implements Validatior {
+public class SyntaxValidator implements Validator {
+    private static final Logger logger = LoggerFactory.getLogger(SyntaxValidator.class);
+
+    @Override
     public List<String> validate(String input, Type type) {
         JsonSchema schema;
         try {
             schema = getJSONSchema();
-        } catch (Exception e) {
-
+        } catch (InvalidPathException e) {
+            logger.error("Invalid path of JSON schema", e);
+            return List.of("Internal server error");
+        } catch (IOException e) {
+            logger.error("IO error while reading JSON schema", e);
             return List.of("Internal server error");
         }
         Set<ValidationMessage> errors = schema.validate(input, type == Type.JSON ? InputFormat.JSON : InputFormat.YAML);
