@@ -1,8 +1,8 @@
-package validation.org.example.syntax_validation;
+package org.example.validation.syntax_validation;
 
 import com.networknt.schema.*;
-import validation.org.example.Type;
-import validation.org.example.Validator;
+import org.example.validation.Type;
+import org.example.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

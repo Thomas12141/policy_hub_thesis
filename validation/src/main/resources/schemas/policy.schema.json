@@ -57,6 +57,35 @@
     "uid",
     "@context"
   ],
+  "anyOf": [
+    {
+      "required": ["permission"],
+      "if": {
+        "type": "array"
+      },
+      "then": {
+        "minItems": 1
+      }
+    },
+    {
+      "required": ["prohibition"],
+      "if": {
+        "type": "array"
+      },
+      "then": {
+        "minItems": 1
+      }
+    },
+    {
+      "required": ["obligation"],
+      "if": {
+        "type": "array"
+      },
+      "then": {
+        "minItems": 1
+      }
+    }
+  ],
   "$defs": {
     "relation": {
       "anyOf": [
@@ -92,49 +121,49 @@
           "type": "string"
         },
         "operator": {
-          "type": "string"
-        },
-        "rightOperand": {},
-        "rightOperandReference": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "uri"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "format": "uri"
-              }
-            }
+          "enum": [
+            "eq",
+            "gt",
+            "gteq",
+            "lt",
+            "lteq",
+            "neq",
+            "isA",
+            "hasPart",
+            "isPartOf",
+            "isAllOf",
+            "isAnyOf",
+            "isNoneOf"
           ]
+        },
+        "rightOperand": {
+          "type": "string"
         }
       },
-      "allOf": [
-        {
-          "anyOf": [
-            {
-              "required": [
-                "rightOperandReference"
-              ]
-            },
-            {
-              "required": [
-                "rightOperand"
-              ]
-            }
-          ]
-        },
-        {
-          "not": {
-            "required": [
-              "rightOperand",
-              "rightOperandReference"
-            ]
+      "if": {
+        "properties": {
+          "leftOperand": {
+            "const": "DateTime"
           }
         }
-      ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "eq",
+              "gt",
+              "gteq",
+              "lt",
+              "lteq",
+              "neq"
+            ]
+          },
+          "rightOperand": {
+            "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z"
+          }
+        }
+      }
     },
     "rule": {
       "type": "array",
@@ -157,17 +186,10 @@
             ]
           },
           "constraint": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/constraint_def"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "$ref": "#/$defs/constraint_def"
-                }
-              }
-            ]
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/constraint_def"
+            }
           },
           "target": {
             "$ref": "#/$defs/relation"

@@ -1,7 +1,7 @@
-package validation.org.example.semantic_validation;
+package org.example.validation.semantic_validation;
 
-import validation.org.example.Type;
-import validation.org.example.Validator;
+import org.example.validation.Type;
+import org.example.validation.Validator;
 
 import java.util.List;
 
