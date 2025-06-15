@@ -3,5 +3,5 @@ package org.example.validation;
 import java.util.List;
 
 public interface Validatior {
-  List<String> validate(String policy);
+  List<String> validate(String policy, Type type);
 }

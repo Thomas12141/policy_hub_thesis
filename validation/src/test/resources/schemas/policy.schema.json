@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Policy",
+  "description": "The policy class",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "description": "The context of the string, we are using json-ld",
+      "const": "http://www.w3.org/ns/odrl.jsonld"
+    },
+    "@type": {
+      "description": "The policy type, there are four valid type: Policy, Set, Offer and Agreement, default is Set, Policy and Set are equivalent",
+      "enum": [
+        "Policy",
+        "Set",
+        "Offer",
+        "Agreement"
+      ]
+    },
+    "uid": {
+      "description": "Policy identifier",
+      "type": "string",
+      "format": "uri"
+    },
+    "profile": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        {
+          "type": "string",
+          "format": "uri"
+        }
+      ]
+    },
+    "permission": {
+      "description": "Permission to do an action",
+      "$ref": "#/$defs/rule"
+    },
+    "prohibition": {
+      "description": "Disallowing to do an action",
+      "$ref": "#/$defs/rule",
+      "required": [
+        "target"
+      ]
+    },
+    "obligation": {
+      "description": "Obligation to do an action",
+      "$ref": "#/$defs/rule"
+    }
+  },
+  "required": [
+    "uid",
+    "@context"
+  ],
+  "$defs": {
+    "relation": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "array"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@Type": {
+              "type": "string"
+            },
+            "uid": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      ]
+    },
+    "constraint_def": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "format": "uri"
+        },
+        "leftOperand": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
+        "rightOperand": {},
+        "rightOperandReference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "required": [
+                "rightOperandReference"
+              ]
+            },
+            {
+              "required": [
+                "rightOperand"
+              ]
+            }
+          ]
+        },
+        {
+          "not": {
+            "required": [
+              "rightOperand",
+              "rightOperandReference"
+            ]
+          }
+        }
+      ]
+    },
+    "rule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 2
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 2
+                }
+              }
+            ]
+          },
+          "constraint": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/constraint_def"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/constraint_def"
+                }
+              }
+            ]
+          },
+          "target": {
+            "$ref": "#/$defs/relation"
+          },
+          "assigner": {
+            "$ref": "#/$defs/relation"
+          },
+          "assignee": {
+            "$ref": "#/$defs/relation"
+          },
+          "summary": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "action"
+        ]
+      }
+    },
+    "policy": {
+      "properties": {
+        "@context": {
+          "description": "The context of the string, we are using json-ld",
+          "const": "http://www.w3.org/ns/odrl.jsonld"
+        },
+        "@type": {
+          "description": "The policy type, there are four valid type: Policy, Set, Offer and Agreement, default is Set, Policy and Set are equivalent",
+          "enum": [
+            "Policy",
+            "Set",
+            "Offer",
+            "Agreement"
+          ]
+        },
+        "uid": {
+          "description": "Policy identifier",
+          "type": "string",
+          "format": "uri"
+        },
+        "profile": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            {
+              "type": "string",
+              "format": "uri"
+            }
+          ]
+        },
+        "permission": {
+          "description": "Permission to do an action",
+          "$ref": "#/$defs/rule"
+        },
+        "prohibition": {
+          "description": "Disallowing to do an action",
+          "$ref": "#/$defs/rule",
+          "required": [
+            "target"
+          ]
+        },
+        "obligation": {
+          "description": "Obligation to do an action",
+          "$ref": "#/$defs/rule"
+        }
+      },
+      "required": [
+        "uid",
+        "@context"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "permission"
+          ]
+        },
+        {
+          "required": [
+            "prohibition"
+          ]
+        },
+        {
+          "required": [
+            "obligation"
+          ]
+        }
+      ]
+    }
+  }
+}
