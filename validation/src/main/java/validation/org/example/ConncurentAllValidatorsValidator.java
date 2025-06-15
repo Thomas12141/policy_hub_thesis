@@ -1,7 +1,7 @@
-package org.example.validation;
+package validation.org.example;
 
-import org.example.validation.semantic_validation.SemanticValidation;
-import org.example.validation.syntax_validation.SyntaxValidator;
+import validation.org.example.semantic_validation.SemanticValidation;
+import validation.org.example.syntax_validation.SyntaxValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

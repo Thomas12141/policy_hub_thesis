@@ -1,4 +1,4 @@
-package org.example.validation;
+package validation.org.example;
 
 import java.util.List;
 
