@@ -19,6 +19,9 @@ public class SyntaxValidator implements Validator {
 
     @Override
     public List<String> validate(String input, Type type) {
+        if (input == null) {
+            return List.of("Policy is null");
+        }
         JsonSchema schema;
         try {
             schema = getJSONSchema();

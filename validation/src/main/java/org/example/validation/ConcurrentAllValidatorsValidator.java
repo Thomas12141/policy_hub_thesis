@@ -2,8 +2,9 @@ package org.example.validation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.example.validation.semantic_validation.SemanticValidation;
+import org.example.validation.semantic_validation.SemanticValidator;
 import org.example.validation.syntax_validation.SyntaxValidator;
+
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -11,7 +12,7 @@ import java.util.concurrent.*;
 public class ConcurrentAllValidatorsValidator implements Validator {
     private static final Logger logger = LoggerFactory.getLogger(ConcurrentAllValidatorsValidator.class);
 
-    private static final Set<Validator> validators = Set.of(new SyntaxValidator(), new SemanticValidation());
+    private static final Set<Validator> validators = Set.of(new SyntaxValidator(), new SemanticValidator());
 
     @Override
     public List<String> validate(String policy, Type type) {

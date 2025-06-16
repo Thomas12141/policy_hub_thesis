@@ -1,0 +1,116 @@
+package rules;
+
+import org.example.validation.semantic_validation.model.Policy;
+import org.example.validation.semantic_validation.model.PolicyValidation;
+import java.util.List
+import org.example.validation.semantic_validation.model.Permission;
+import org.example.validation.semantic_validation.model.Constraint;
+import org.example.validation.semantic_validation.model.Duty;
+
+rule "Membership must not appear in duty"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $duties : duties ) from $policy
+    Duty( $constraints : constraints ) from $duties
+    Constraint( leftOperand == "Membership" ) from $constraints
+then
+    $errors.add("Membership must not appear in duty");
+end
+rule "LocationPolicy Validation"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $duties : duties ) from $policy
+    Duty( $constraints : constraints ) from $duties
+    Constraint( leftOperand == "Membership" ) from $constraints
+then
+    // Verify if the location is a valid country code or region
+    String location = $constraint.getRightOperand();
+    if (!location.matches("[A-Z]{2,3}")) {
+        validationErrors.add("LocationPolicy: Location must be a valid ISO country code");
+    }
+end
+/*
+rule "IsDataspaceMember Policy Validation"
+when
+    $policy: Policy(
+        $permissions: permissions != null,
+        $permission: permissions[0],
+        $constraints: $permission.constraints != null,
+        $constraint: $constraints[0],
+        eval($constraint.getLeftOperand().equals("isMember") &&
+             $constraint.getOperator().equals("eq"))
+    )
+then
+    if (!$policy.getAssignee().startsWith("http")) {
+
+    }
+end
+
+rule "AccessPolicy Validation"
+when
+    $policy: Policy(
+        assignee != null,
+        $permissions: permissions != null
+    )
+then
+    // Verify assignee URI format
+    if (!$policy.getAssignee().startsWith("http")) {
+        validationErrors.add("AccessPolicy: Assignee must be a valid URI");
+    }
+end
+
+rule "CountPolicy Validation"
+when
+    $policy: Policy(
+        $permissions: permissions != null,
+        $permission: permissions[0],
+        $constraints: $permission.constraints != null,
+        $constraint: $constraints[0],
+        eval($constraint.getLeftOperand().equals("count") &&
+             $constraint.getOperator().matches("(lt|lteq|eq)"))
+    )
+then
+    try {
+        Integer.parseInt($constraint.getRightOperand());
+    } catch (NumberFormatException e) {
+        validationErrors.add("CountPolicy: Count value must be a number");
+    }
+end
+
+rule "TimeFramePolicy Validation"
+when
+    $policy: Policy(
+        $permissions: permissions != null,
+        $permission: permissions[0],
+        $constraints: $permission.constraints != null,
+        $constraint: $constraints[0],
+        eval($constraint.getLeftOperand().equals("DateTime"))
+    )
+then
+    String dateTimePattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z";
+    if (!$constraint.getRightOperand().matches(dateTimePattern)) {
+        validationErrors.add("TimeFramePolicy: Invalid datetime format. Use ISO 8601 format");
+    }
+end
+
+
+rule "BillingPolicy Validation"
+when
+    $policy: Policy(
+        $permissions: permissions != null,
+        $permission: permissions[0],
+        $constraints: $permission.constraints != null,
+        $constraint: $constraints[0],
+        eval($constraint.getLeftOperand().equals("payment"))
+    )
+then
+    try {
+        Double amount = Double.parseDouble($constraint.getRightOperand());
+        if (amount <= 0) {
+            validationErrors.add("BillingPolicy: Payment amount must be greater than 0");
+        }
+    } catch (NumberFormatException e) {
+        validationErrors.add("BillingPolicy: Invalid payment amount format");
+    }
+end
+*/

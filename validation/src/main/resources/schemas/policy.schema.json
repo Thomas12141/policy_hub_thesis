@@ -6,7 +6,14 @@
   "properties": {
     "@context": {
       "description": "The context of the string, we are using json-ld",
-      "const": "http://www.w3.org/ns/odrl.jsonld"
+      "anyOf": [
+        {
+          "const": "http://www.w3.org/ns/odrl.jsonld"
+        },
+        {
+          "type": "array"
+        }
+      ]
     },
     "@type": {
       "description": "The policy type, there are four valid type: Policy, Set, Offer and Agreement, default is Set, Policy and Set are equivalent",
@@ -59,7 +66,9 @@
   ],
   "anyOf": [
     {
-      "required": ["permission"],
+      "required": [
+        "permission"
+      ],
       "if": {
         "type": "array"
       },
@@ -68,7 +77,9 @@
       }
     },
     {
-      "required": ["prohibition"],
+      "required": [
+        "prohibition"
+      ],
       "if": {
         "type": "array"
       },
@@ -77,7 +88,9 @@
       }
     },
     {
-      "required": ["obligation"],
+      "required": [
+        "obligation"
+      ],
       "if": {
         "type": "array"
       },
@@ -137,7 +150,14 @@
           ]
         },
         "rightOperand": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
         }
       },
       "if": {
@@ -177,11 +197,9 @@
                 "minLength": 2
               },
               {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "minLength": 2
-                }
+                "type": "array"
+              }, {
+                "type": "object"
               }
             ]
           },
@@ -204,17 +222,20 @@
             "type": "string",
             "format": "uri"
           }
-        },
-        "required": [
-          "action"
-        ]
+        }
       }
     },
     "policy": {
       "properties": {
         "@context": {
           "description": "The context of the string, we are using json-ld",
-          "const": "http://www.w3.org/ns/odrl.jsonld"
+          "anyOf": [
+            {
+              "const": "http://www.w3.org/ns/odrl.jsonld"
+            }, {
+              "type": "array"
+            }
+          ]
         },
         "@type": {
           "description": "The policy type, there are four valid type: Policy, Set, Offer and Agreement, default is Set, Policy and Set are equivalent",
