@@ -6,6 +6,7 @@ import java.util.List
 import org.example.validation.semantic_validation.model.Permission;
 import org.example.validation.semantic_validation.model.Constraint;
 import org.example.validation.semantic_validation.model.Duty;
+import org.example.validation.semantic_validation.model.Prohibition;
 
 rule "Membership must not appear in duty"
 when
@@ -16,6 +17,15 @@ when
 then
     $errors.add("Membership must not appear in duty");
 end
+rule "Membership must not appear in prohibition"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $prohibitions : prohibitions ) from $policy
+    Prohibition( $constraints : constraints ) from $prohibitions
+    Constraint( leftOperand == "Membership" ) from $constraints
+then
+    $errors.add("Membership must not appear in prohibition");
+end
 rule "LocationPolicy Validation"
 when
     PolicyValidation( $policy : policy, $errors : errors )
@@ -23,11 +33,7 @@ when
     Duty( $constraints : constraints ) from $duties
     Constraint( leftOperand == "Membership" ) from $constraints
 then
-    // Verify if the location is a valid country code or region
-    String location = $constraint.getRightOperand();
-    if (!location.matches("[A-Z]{2,3}")) {
-        validationErrors.add("LocationPolicy: Location must be a valid ISO country code");
-    }
+
 end
 /*
 rule "IsDataspaceMember Policy Validation"

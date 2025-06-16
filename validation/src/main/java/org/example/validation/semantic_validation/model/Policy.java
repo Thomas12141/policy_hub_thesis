@@ -91,6 +91,18 @@ public class Policy {
             builder.setDuties(duties);
         }
 
+        if (rootNode.has("prohibition")) {
+            List<Prohibition> prohibitions = new ArrayList<>();
+            JsonNode prohibitionsNode =rootNode.get("prohibition");
+            if (prohibitionsNode.isArray()) {
+                for (JsonNode prohibitionNode : prohibitionsNode) {
+                    Prohibition prohibition = new Prohibition();
+                    prohibitions.add((Prohibition) setRuleProperties(prohibitionNode, prohibition));
+                }
+            }
+            builder.setProhibitions(prohibitions);
+        }
+
         if (rootNode.has("assignee")) {
             builder.setAssignee(rootNode.get("assignee").asText());
         }

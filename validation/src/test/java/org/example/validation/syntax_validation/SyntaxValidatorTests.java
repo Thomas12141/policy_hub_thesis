@@ -13,10 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Timeout(value = 1, unit = TimeUnit.SECONDS)
 class SyntaxValidatorTests {
 
-    private final static SyntaxValidator validator = new SyntaxValidator();
+    private static final SyntaxValidator validator = new SyntaxValidator();
 
     @Test
-    public void EmptyString() {
+    void EmptyString() {
         //Arrange
         String policy = TestPolicies.EMPTY_STRING;
 
@@ -40,7 +40,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void Empty_JSON() {
+    void Empty_JSON() {
         //Arrange
         String policy = TestPolicies.EMPTY_JSON;
 
@@ -59,7 +59,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void WithoutContext_JSON() {
+    void WithoutContext_JSON() {
         //Arrange
         String policy = TestPolicies.WITHOUT_CONTEXT;
 
@@ -72,7 +72,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ValidPolicy_JSON() {
+    void ValidPolicy_JSON() {
         //Arrange
         String policy = TestPolicies.VALID_POLICY;
 
@@ -84,7 +84,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void MissingRequiredUid_JSON() {
+    void MissingRequiredUid_JSON() {
         //Arrange
         String policy = TestPolicies.MISSING_REQUIRED_UID;
 
@@ -96,7 +96,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample1_JSON() {
+    void ODRLExample1_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_1;
 
@@ -109,7 +109,7 @@ class SyntaxValidatorTests {
 
 
     @Test
-    public void ODRLExample2_JSON() {
+    void ODRLExample2_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_2;
 
@@ -121,7 +121,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample3_JSON() {
+    void ODRLExample3_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_3;
 
@@ -133,7 +133,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample4_JSON() {
+    void ODRLExample4_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_4;
 
@@ -145,7 +145,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample5_JSON() {
+    void ODRLExample5_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_5;
 
@@ -157,7 +157,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample8_JSON() {
+    void ODRLExample8_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_8;
 
@@ -169,7 +169,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample9_JSON() {
+    void ODRLExample9_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_9;
 
@@ -181,7 +181,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample12_JSON() {
+    void ODRLExample12_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_12;
 
@@ -193,7 +193,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample13_JSON() {
+    void ODRLExample13_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_13;
 
@@ -205,7 +205,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample14_JSON() {
+    void ODRLExample14_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_14;
 
@@ -217,7 +217,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample16_JSON() {
+    void ODRLExample16_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_16;
 
@@ -229,7 +229,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample17_JSON() {
+    void ODRLExample17_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_17;
 
@@ -241,7 +241,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample18_JSON() {
+    void ODRLExample18_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_18;
 
@@ -253,7 +253,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample19_JSON() {
+    void ODRLExample19_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_19;
 
@@ -265,7 +265,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample20_JSON() {
+    void ODRLExample20_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_20;
 
@@ -277,7 +277,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample21_JSON() {
+    void ODRLExample21_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_21;
 
@@ -289,7 +289,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample22_JSON() {
+    void ODRLExample22_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_22;
 
@@ -301,7 +301,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample23_JSON() {
+    void ODRLExample23_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_23;
 
@@ -313,7 +313,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample24_JSON() {
+    void ODRLExample24_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_24;
 
@@ -325,7 +325,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample25_JSON() {
+    void ODRLExample25_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_25;
 
@@ -337,7 +337,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample26_JSON() {
+    void ODRLExample26_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_26;
 
@@ -349,7 +349,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample27_JSON() {
+    void ODRLExample27_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_27;
 
@@ -361,7 +361,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample28_JSON() {
+    void ODRLExample28_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_28;
 
@@ -373,7 +373,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample29_JSON() {
+    void ODRLExample29_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_29;
 
@@ -385,7 +385,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample30_JSON() {
+    void ODRLExample30_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_30;
 
@@ -397,7 +397,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample31_JSON() {
+    void ODRLExample31_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_31;
 
@@ -409,7 +409,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample32_JSON() {
+    void ODRLExample32_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_32;
 
@@ -421,7 +421,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample33_JSON() {
+    void ODRLExample33_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_33;
 
@@ -433,7 +433,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample34_JSON() {
+    void ODRLExample34_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_34;
 
@@ -445,7 +445,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void ODRLExample35_JSON() {
+    void ODRLExample35_JSON() {
         //Arrange
         String policy = TestPolicies.ODRL_EXAMPLE_35;
 
@@ -458,7 +458,7 @@ class SyntaxValidatorTests {
 
     /*
     @Test
-    public void ValidAgreement_YAML() {
+    void ValidAgreement_YAML() {
         //Arrange
         String policy = """
             "@context": "http://www.w3.org/ns/odrl.jsonld"
@@ -480,7 +480,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void InvalidType_YAML() {
+    void InvalidType_YAML() {
         //Arrange
         String policy = """
             "@context": "http://www.w3.org/ns/odrl.jsonld"
@@ -499,7 +499,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void PolicyWithProhibition_JSON() {
+    void PolicyWithProhibition_JSON() {
         //Arrange
         String policy = """
             {
@@ -525,7 +525,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void PolicyWithConstraint_YAML() {
+    void PolicyWithConstraint_YAML() {
         //Arrange
         String policy = """
             "@context": "http://www.w3.org/ns/odrl.jsonld"
@@ -549,7 +549,7 @@ class SyntaxValidatorTests {
     */
 
     @Test
-    public void PolicyWithDateTime_JSON() {
+    void PolicyWithDateTime_JSON() {
         //Arrange
         String policy = """
                     {

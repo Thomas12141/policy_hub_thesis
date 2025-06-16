@@ -1,5 +1,5 @@
 package org.example.validation.semantic_validation.model;
 
-public class Prohibition {
+public class Prohibition extends Rule {
 
 }

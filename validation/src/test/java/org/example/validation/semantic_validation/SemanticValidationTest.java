@@ -13,7 +13,7 @@ class SemanticValidationTest {
 
 
     @Test
-    void testIsDataspaceMemberPolicy_Valid() {
+    void testIsDataspaceMemberPolicy_InDutyInvalid() {
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -32,6 +32,28 @@ class SemanticValidationTest {
 
         List<String> errors = validator.validate(policy, Type.JSON);
         assertThat(errors).hasSize(1).contains("Membership must not appear in duty");
+    }
+
+    @Test
+    void testIsDataspaceMemberPolicy_InProhibitionInvalid() {
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "prohibition": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "Membership",
+                  "operator": "eq",
+                  "rightOperand": "ACTIVE"
+                }]
+              }]
+            }""";
+
+        List<String> errors = validator.validate(policy, Type.JSON);
+        assertThat(errors).hasSize(1).contains("Membership must not appear in prohibition");
     }
 
     @Test
@@ -81,7 +103,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "count",
+                  "leftOperand": "NumberOfTransfers",
                   "operator": "lteq",
                   "rightOperand": "3"
                 }]
@@ -103,7 +125,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "count",
+                  "leftOperand": "NumberOfTransfers",
                   "operator": "lteq",
                   "rightOperand": "invalid"
                 }]
