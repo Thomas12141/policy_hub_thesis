@@ -1,6 +1,5 @@
 package org.example.validation.semantic_validation;
 
-import lombok.Getter;
 import org.example.validation.Type;
 import org.example.validation.Validator;
 import org.example.validation.semantic_validation.model.Policy;

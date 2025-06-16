@@ -28,7 +28,7 @@ class SyntaxValidatorTests {
     }
 
     @Test
-    public void NullPointer() {
+    void NullPointer() {
         //Arrange
         String policy = TestPolicies.NULL_POINTER;
 
