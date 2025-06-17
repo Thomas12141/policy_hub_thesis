@@ -18,7 +18,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter")// https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.27.3")
     compileOnly("org.projectlombok:lombok:1.18.38")
     testImplementation("org.projectlombok:lombok:1.18.38")

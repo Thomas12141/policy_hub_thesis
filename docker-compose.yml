@@ -1,0 +1,27 @@
+services:
+
+  database-container:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB_FILE:  /run/secrets/database_name
+      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+      POSTGRES_USER_FILE: /run/secrets/database_user
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    secrets:
+      - database_name
+      - database_password
+      - database_user
+
+volumes:
+  database_data:
+
+secrets:
+  database_name:
+    file: etc/secrets/database_name.txt
+  database_password:
+    file: etc/secrets/database_password.txt
+  database_user:
+    file: etc/secrets/database_user.txt
