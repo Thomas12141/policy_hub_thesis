@@ -13,7 +13,8 @@ class SemanticValidationTest {
 
 
     @Test
-    void testIsDataspaceMemberPolicy_InDutyInvalid() {
+    void testIsDataspaceMemberPolicy_Invalid_InDuty() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -30,12 +31,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).hasSize(1).contains("Membership must not appear in duty");
     }
 
     @Test
-    void testIsDataspaceMemberPolicy_InProhibitionInvalid() {
+    void testIsDataspaceMemberPolicy_Invalid_InProhibition() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -52,12 +57,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).hasSize(1).contains("Membership must not appear in prohibition");
     }
 
     @Test
     void testAccessPolicy_Valid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -70,12 +79,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).isEmpty();
     }
 
     @Test
     void testAccessPolicy_Invalid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -89,11 +102,14 @@ class SemanticValidationTest {
             }""";
 
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("AccessPolicy: Assignee must be a valid URI");
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("AccessPolicy: Assignee must be a valid URI");
     }
 
     @Test
     void testCountPolicy_Valid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -110,12 +126,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).isEmpty();
     }
 
     @Test
     void testCountPolicy_Invalid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -132,12 +152,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("CountPolicy: NumberOfTransfers must be a positive integer");
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("CountPolicy: NumberOfTransfers must be a positive integer");
     }
 
     @Test
     void testTimeFramePolicy_Valid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -154,12 +178,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).isEmpty();
     }
 
     @Test
     void testTimeFramePolicy_Invalid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -181,12 +209,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).hasSize(1).contains("TimeFramePolicy: Start date must be before end date");
     }
 
     @Test
     void testLocationPolicy_Valid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -203,12 +235,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).isEmpty();
     }
 
     @Test
     void testLocationPolicy_Invalid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -225,12 +261,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).hasSize(1).contains("LocationPolicy: Location must be a valid ISO country code");
     }
 
     @Test
     void testBillingPolicy_Valid() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -247,12 +287,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
         assertThat(errors).isEmpty();
     }
 
     @Test
     void testBillingPolicy_Invalid_NegativeAmount() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -269,12 +313,16 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("BillingPolicy: Payment amount must be greater than 0");
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("BillingPolicy: Payment amount must be greater than 0");
     }
 
     @Test
     void testBillingPolicy_Invalid_Format() {
+        //Arrange
         String policy = """
             {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -291,7 +339,10 @@ class SemanticValidationTest {
               }]
             }""";
 
+        //Act
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("BillingPolicy: Invalid payment amount format");
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("BillingPolicy: Invalid payment amount format");
     }
 }
