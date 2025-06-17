@@ -133,7 +133,7 @@ class SemanticValidationTest {
             }""";
 
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("CountPolicy: Count value must be a number");
+        assertThat(errors).contains("CountPolicy: NumberOfTransfers must be a positive integer");
     }
 
     @Test
@@ -171,13 +171,18 @@ class SemanticValidationTest {
                 "constraint": [{
                   "leftOperand": "DateTime",
                   "operator": "lteq",
-                  "rightOperand": "2024-13-32"
+                  "rightOperand": "2024-12-31T23:59:59Z"
+                },
+                {
+                  "leftOperand": "DateTime",
+                  "operator": "gt",
+                  "rightOperand": "2025-12-31T23:59:59Z"
                 }]
               }]
             }""";
 
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("TimeFramePolicy: Invalid datetime format. Use ISO 8601 format");
+        assertThat(errors).hasSize(1).contains("TimeFramePolicy: Start date must be before end date");
     }
 
     @Test
@@ -213,7 +218,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "spatial",
+                  "leftOperand": "location",
                   "operator": "eq",
                   "rightOperand": "INVALID"
                 }]
@@ -221,7 +226,7 @@ class SemanticValidationTest {
             }""";
 
         List<String> errors = validator.validate(policy, Type.JSON);
-        assertThat(errors).contains("LocationPolicy: Location must be a valid ISO country code");
+        assertThat(errors).hasSize(1).contains("LocationPolicy: Location must be a valid ISO country code");
     }
 
     @Test

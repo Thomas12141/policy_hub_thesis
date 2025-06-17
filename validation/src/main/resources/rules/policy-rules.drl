@@ -1,39 +1,83 @@
 package rules;
 
+import java.util.List;
 import org.example.validation.semantic_validation.model.Policy;
 import org.example.validation.semantic_validation.model.PolicyValidation;
-import java.util.List
 import org.example.validation.semantic_validation.model.Permission;
 import org.example.validation.semantic_validation.model.Constraint;
 import org.example.validation.semantic_validation.model.Duty;
 import org.example.validation.semantic_validation.model.Prohibition;
+import org.example.validation.semantic_validation.model.Rule;
+import function org.example.validation.semantic_validation.SemanticValidatorHelper.isBiggerThenZero;
+import function org.example.validation.semantic_validation.SemanticValidatorHelper.isSupportedLocale;
+import function org.example.validation.semantic_validation.SemanticValidatorHelper.areDatesTimesValid;
 
-rule "Membership must not appear in duty"
+rule "MembershipPolicy validation: Membership in duty"
 when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $duties : duties ) from $policy
-    Duty( $constraints : constraints ) from $duties
+    Rule( $constraints : constraints ) from $duties
     Constraint( leftOperand == "Membership" ) from $constraints
 then
     $errors.add("Membership must not appear in duty");
 end
-rule "Membership must not appear in prohibition"
+
+rule "MembershipPolicy validation: Membership in prohibition"
 when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $prohibitions : prohibitions ) from $policy
-    Prohibition( $constraints : constraints ) from $prohibitions
+    Rule( $constraints : constraints ) from $prohibitions
     Constraint( leftOperand == "Membership" ) from $constraints
 then
     $errors.add("Membership must not appear in prohibition");
 end
-rule "LocationPolicy Validation"
+
+rule "LocationPolicy Validation unsupported location"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $permissions : permissions) from $policy
+    Rule( $dutyConstraints : constraints ) from $permissions
+    Constraint( leftOperand == "location" && !isSupportedLocale(rightOperand) ) from $dutyConstraints
+then
+    $errors.add("LocationPolicy: Location must be a valid ISO country code");
+end
+
+rule "LocationPolicy Validation in prohibition"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $prohibitions : prohibitions ) from $policy
+    Rule( $dutyConstraints : constraints ) from $prohibitions
+    Constraint( leftOperand == "location" && !isSupportedLocale(rightOperand) ) from $dutyConstraints
+then
+    $errors.add("LocationPolicy: Location must be a valid ISO country code");
+end
+
+rule "LocationPolicy Validation in duty"
 when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $duties : duties ) from $policy
-    Duty( $constraints : constraints ) from $duties
-    Constraint( leftOperand == "Membership" ) from $constraints
+    Rule( $dutyConstraints : constraints ) from $duties
+    Constraint( leftOperand == "location") from $dutyConstraints
 then
+    $errors.add("LocationPolicy: Location must not be in duty");
+end
 
+rule "CountPolicy validation: non-positive count"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $permissions : permissions ) from $policy
+    Rule( $constraints : constraints ) from $permissions
+    Constraint( leftOperand == "NumberOfTransfers" && !isBiggerThenZero(rightOperand) ) from $constraints
+then
+    $errors.add("CountPolicy: NumberOfTransfers must be a positive integer");
+end
+
+rule "TimeFramePolicy validation: start date after end date"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( !areDatesTimesValid(prohibitions, permissions, duties) ) from $policy
+then
+    $errors.add("TimeFramePolicy: Start date must be before end date");
 end
 /*
 rule "IsDataspaceMember Policy Validation"

@@ -66,8 +66,8 @@ public class Policy {
             builder.setType(Type.valueOf(typeStr.toUpperCase()));
         }
 
+        List<Permission> permissions = new ArrayList<>();
         if (rootNode.has("permission")) {
-            List<Permission> permissions = new ArrayList<>();
             JsonNode permissionsNode = rootNode.get("permission");
             if (permissionsNode.isArray()) {
                 for (JsonNode permNode : permissionsNode) {
@@ -76,11 +76,11 @@ public class Policy {
                     permissions.add((Permission) setRuleProperties(permNode, permission));
                 }
             }
-            builder.setPermissions(permissions);
         }
+        builder.setPermissions(permissions);
 
+        List<Duty> duties = new ArrayList<>();
         if (rootNode.has("duty")) {
-            List<Duty> duties = new ArrayList<>();
             JsonNode dutiesNode = rootNode.get("duty");
             if (dutiesNode.isArray()) {
                 for (JsonNode dutyNode : dutiesNode) {
@@ -88,11 +88,12 @@ public class Policy {
                     duties.add((Duty) setRuleProperties(dutyNode, duty));
                 }
             }
-            builder.setDuties(duties);
         }
+        builder.setDuties(duties);
 
+
+        List<Prohibition> prohibitions = new ArrayList<>();
         if (rootNode.has("prohibition")) {
-            List<Prohibition> prohibitions = new ArrayList<>();
             JsonNode prohibitionsNode =rootNode.get("prohibition");
             if (prohibitionsNode.isArray()) {
                 for (JsonNode prohibitionNode : prohibitionsNode) {
@@ -100,8 +101,8 @@ public class Policy {
                     prohibitions.add((Prohibition) setRuleProperties(prohibitionNode, prohibition));
                 }
             }
-            builder.setProhibitions(prohibitions);
         }
+        builder.setProhibitions(prohibitions);
 
         if (rootNode.has("assignee")) {
             builder.setAssignee(rootNode.get("assignee").asText());
@@ -140,8 +141,8 @@ public class Policy {
             rule.setTarget(node.get("target").asText());
         }
 
+        List<Constraint> constraints = new ArrayList<>();
         if (node.has("constraint")) {
-            List<Constraint> constraints = new ArrayList<>();
             JsonNode constraintsNode = node.get("constraint");
             if (constraintsNode.isArray()) {
                 for (JsonNode constraintNode : constraintsNode) {
@@ -152,8 +153,8 @@ public class Policy {
                     constraints.add(constraint);
                 }
             }
-            rule.setConstraints(constraints);
         }
+        rule.setConstraints(constraints);
 
         return rule;
     }
