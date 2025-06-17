@@ -14,19 +14,11 @@ public class SemanticValidatorHelper {
     private SemanticValidatorHelper() {
     }
 
-    protected static final Set<String> SUPPORTED_LOCALES = new HashSet<>(Arrays.stream(Locale.IsoCountryCode.values()).
-            map(s -> s.toString().toUpperCase()).toList());
+    protected static final Set<String> SUPPORTED_LOCALES = new HashSet<>(Arrays.stream(Locale.
+        getISOCountries()).map(String::toUpperCase).toList());
 
     public static boolean isSupportedLocale(String rightValue) {
         return SUPPORTED_LOCALES.contains(rightValue.toUpperCase());
-    }
-
-    public static boolean isBiggerThenZero(String rightValue) {
-        try {
-            return Integer.parseInt(rightValue) > 0;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 
     public static boolean areDatesTimesValid(List<Prohibition> prohibitions, List<Permission> permissions, List<Duty> duties) {
@@ -54,5 +46,16 @@ public class SemanticValidatorHelper {
         Instant topLimit = Instant.parse(equalsSmallerThen.getFirst().getRightOperand());
 
         return topLimit.isAfter(bottomLimit);
+    }
+
+    public static boolean isValueGreaterThenZero(String rightValue) {
+        Double value;
+        try {
+            value = Double.parseDouble(rightValue);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return value > 0;
     }
 }

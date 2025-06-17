@@ -242,33 +242,33 @@ public class Policy {
             sb.append("  \"assigner\": \"").append(assigner).append("\",\n");
         }
 
-        if(permissions != null) {
-            sb.append("  \"permission\": [\n");
+        sb.append("  \"permission\": [\n");
+        if(!permissions.isEmpty()) {
 
             for (Permission permission : permissions) {
                 sb.append(permission.toString()).append(",\n");
             }
             sb.deleteCharAt(sb.length() - 2);
-            sb.append("  ],\n");
         }
+        sb.append("  ],\n");
 
-        if (duties != null) {
-            sb.append("  \"duty\": [\n");
+        sb.append("  \"duty\": [\n");
+        if (!duties.isEmpty()) {
             for (Duty duty : duties) {
                 sb.append(duty.toString()).append(",\n");
             }
             sb.deleteCharAt(sb.length() - 2);
-            sb.append("  ],\n");
         }
+        sb.append("  ],\n");
 
-        if (prohibitions != null) {
-            sb.append("  \"prohibition\": [\n");
+        sb.append("  \"prohibition\": [\n");
+        if (!prohibitions.isEmpty()) {
             for (Prohibition prohibition : prohibitions) {
                 sb.append(prohibition.toString()).append(",\n");
             }
             sb.deleteCharAt(sb.length() - 2);
-            sb.append("  ],\n");
         }
+        sb.append("  ],\n");
 
         if (otherProperties != null) {
             for (Map.Entry<String, Object> entry : otherProperties.entrySet()) {
@@ -276,6 +276,11 @@ public class Policy {
             }
             sb.deleteCharAt(sb.length() - 2);
         }
+
+        if (sb.charAt(sb.length() - 2) == ',') {
+            sb.deleteCharAt(sb.length() - 2);
+        }
+
         sb.append("\n}");
 
         return sb.toString();

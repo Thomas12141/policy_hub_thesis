@@ -65,6 +65,32 @@ class SemanticValidationTest {
     }
 
     @Test
+    void testIsDataspaceMemberPolicy_Invalid_rightOperand() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "Membership",
+                  "operator": "eq",
+                  "rightOperand": ""
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("Membership rightOperand must be ACTIVE");
+    }
+
+    @Test
     void testAccessPolicy_Valid() {
         //Arrange
         String policy = """
@@ -75,53 +101,11 @@ class SemanticValidationTest {
               "assignee": "http://example.com/user:1234",
               "permission": [{
                 "action": "use",
-                "target": "http://example.com/resource:1234"
-              }]
-            }""";
-
-        //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
-
-        //Assert
-        assertThat(errors).isEmpty();
-    }
-
-    @Test
-    void testAccessPolicy_Invalid() {
-        //Arrange
-        String policy = """
-            {
-              "@context": "http://www.w3.org/ns/odrl.jsonld",
-              "@type": "Set",
-              "uid": "http://example.com/policy:1234",
-              "assignee": "invalid-uri",
-              "permission": [{
-                "action": "use",
-                "target": "http://example.com/resource:1234"
-              }]
-            }""";
-
-        List<String> errors = validator.validate(policy, Type.JSON);
-
-        //Assert
-        assertThat(errors).hasSize(1).contains("AccessPolicy: Assignee must be a valid URI");
-    }
-
-    @Test
-    void testCountPolicy_Valid() {
-        //Arrange
-        String policy = """
-            {
-              "@context": "http://www.w3.org/ns/odrl.jsonld",
-              "@type": "Set",
-              "uid": "http://example.com/policy:1234",
-              "permission": [{
-                "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "NumberOfTransfers",
-                  "operator": "lteq",
-                  "rightOperand": "3"
+                  "leftOperand": "id",
+                  "operator": "eq",
+                  "rightOperand": "valid-id"
                 }]
               }]
             }""";
@@ -131,89 +115,6 @@ class SemanticValidationTest {
 
         //Assert
         assertThat(errors).isEmpty();
-    }
-
-    @Test
-    void testCountPolicy_Invalid() {
-        //Arrange
-        String policy = """
-            {
-              "@context": "http://www.w3.org/ns/odrl.jsonld",
-              "@type": "Set",
-              "uid": "http://example.com/policy:1234",
-              "permission": [{
-                "action": "use",
-                "target": "http://example.com/resource:1234",
-                "constraint": [{
-                  "leftOperand": "NumberOfTransfers",
-                  "operator": "lteq",
-                  "rightOperand": "invalid"
-                }]
-              }]
-            }""";
-
-        //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
-
-        //Assert
-        assertThat(errors).hasSize(1).contains("CountPolicy: NumberOfTransfers must be a positive integer");
-    }
-
-    @Test
-    void testTimeFramePolicy_Valid() {
-        //Arrange
-        String policy = """
-            {
-              "@context": "http://www.w3.org/ns/odrl.jsonld",
-              "@type": "Set",
-              "uid": "http://example.com/policy:1234",
-              "permission": [{
-                "action": "use",
-                "target": "http://example.com/resource:1234",
-                "constraint": [{
-                  "leftOperand": "DateTime",
-                  "operator": "lteq",
-                  "rightOperand": "2024-12-31T23:59:59Z"
-                }]
-              }]
-            }""";
-
-        //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
-
-        //Assert
-        assertThat(errors).isEmpty();
-    }
-
-    @Test
-    void testTimeFramePolicy_Invalid() {
-        //Arrange
-        String policy = """
-            {
-              "@context": "http://www.w3.org/ns/odrl.jsonld",
-              "@type": "Set",
-              "uid": "http://example.com/policy:1234",
-              "permission": [{
-                "action": "use",
-                "target": "http://example.com/resource:1234",
-                "constraint": [{
-                  "leftOperand": "DateTime",
-                  "operator": "lteq",
-                  "rightOperand": "2024-12-31T23:59:59Z"
-                },
-                {
-                  "leftOperand": "DateTime",
-                  "operator": "gt",
-                  "rightOperand": "2025-12-31T23:59:59Z"
-                }]
-              }]
-            }""";
-
-        //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
-
-        //Assert
-        assertThat(errors).hasSize(1).contains("TimeFramePolicy: Start date must be before end date");
     }
 
     @Test
@@ -228,7 +129,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "spatial",
+                  "leftOperand": "location",
                   "operator": "eq",
                   "rightOperand": "DE"
                 }]
@@ -269,7 +170,7 @@ class SemanticValidationTest {
     }
 
     @Test
-    void testBillingPolicy_Valid() {
+    void testCountPolicy_Valid() {
         //Arrange
         String policy = """
             {
@@ -277,6 +178,167 @@ class SemanticValidationTest {
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
               "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "NumberOfTransfers",
+                  "operator": "lteq",
+                  "rightOperand": "3"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).isEmpty();
+    }
+
+    @Test
+    void testCountPolicy_Invalid_RightOperand() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "NumberOfTransfers",
+                  "operator": "lteq",
+                  "rightOperand": "invalid"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("CountPolicy: NumberOfTransfers must be a positive integer");
+    }
+
+    @Test
+    void testCountPolicy_Invalid_Operator() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "NumberOfTransfers",
+                  "operator": "eq",
+                  "rightOperand": "3"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("CountPolicy: NumberOfTransfers must be less than or equal to");
+    }
+
+    @Test
+    void testTimeFramePolicy_Valid() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "DateTime",
+                  "operator": "lteq",
+                  "rightOperand": "2024-12-31T23:59:59Z"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).isEmpty();
+    }
+
+    @Test
+    void testTimeFramePolicy_Invalid_LessThenIsBeforeGreaterThen() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "DateTime",
+                  "operator": "lt",
+                  "rightOperand": "2024-12-31T23:59:59Z"
+                },
+                {
+                  "leftOperand": "DateTime",
+                  "operator": "gt",
+                  "rightOperand": "2025-12-31T23:59:59Z"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("TimeFramePolicy: Start date must be before end date");
+    }
+
+    @Test
+    void testTimeFramePolicy_Invalid_RightOperand() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "permission": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "DateTime",
+                  "operator": "lteq",
+                  "rightOperand": "5"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("TimeFramePolicy: Right operand must be a date in ISO 8601 format");
+    }
+
+    @Test
+    void testBillingPolicy_Valid() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "duty": [{
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
@@ -302,7 +364,7 @@ class SemanticValidationTest {
               "@context": "http://www.w3.org/ns/odrl.jsonld",
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
-              "permission": [{
+              "duty": [{
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
@@ -317,11 +379,63 @@ class SemanticValidationTest {
         List<String> errors = validator.validate(policy, Type.JSON);
 
         //Assert
-        assertThat(errors).hasSize(1).contains("BillingPolicy: Payment amount must be greater than 0");
+        assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must be a positive number");
     }
 
     @Test
     void testBillingPolicy_Invalid_Format() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "duty": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "payment",
+                  "operator": "eq",
+                  "rightOperand": "invalid"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must be a positive number");
+    }
+
+    @Test
+    void testBillingPolicy_Invalid_InProhibition() {
+        //Arrange
+        String policy = """
+            {
+              "@context": "http://www.w3.org/ns/odrl.jsonld",
+              "@type": "Set",
+              "uid": "http://example.com/policy:1234",
+              "prohibition": [{
+                "action": "use",
+                "target": "http://example.com/resource:1234",
+                "constraint": [{
+                  "leftOperand": "payment",
+                  "operator": "eq",
+                  "rightOperand": "3"
+                }]
+              }]
+            }""";
+
+        //Act
+        List<String> errors = validator.validate(policy, Type.JSON);
+
+        //Assert
+        assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must appear in duty");
+    }
+
+    @Test
+    void testBillingPolicy_Invalid_InPermission() {
         //Arrange
         String policy = """
             {
@@ -343,6 +457,6 @@ class SemanticValidationTest {
         List<String> errors = validator.validate(policy, Type.JSON);
 
         //Assert
-        assertThat(errors).hasSize(1).contains("BillingPolicy: Invalid payment amount format");
+        assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must appear in duty");
     }
 }

@@ -8,9 +8,9 @@ import org.example.validation.semantic_validation.model.Constraint;
 import org.example.validation.semantic_validation.model.Duty;
 import org.example.validation.semantic_validation.model.Prohibition;
 import org.example.validation.semantic_validation.model.Rule;
-import function org.example.validation.semantic_validation.SemanticValidatorHelper.isBiggerThenZero;
 import function org.example.validation.semantic_validation.SemanticValidatorHelper.isSupportedLocale;
 import function org.example.validation.semantic_validation.SemanticValidatorHelper.areDatesTimesValid;
+import function org.example.validation.semantic_validation.SemanticValidatorHelper.isValueGreaterThenZero;
 
 rule "MembershipPolicy validation: Membership in duty"
 when
@@ -32,7 +32,17 @@ then
     $errors.add("Membership must not appear in prohibition");
 end
 
-rule "LocationPolicy Validation unsupported location"
+rule "MembershipPolicy validation: Membership is not ACTIVE"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $permissions : permissions ) from $policy
+    Rule( $constraints : constraints ) from $permissions
+    Constraint( leftOperand == "Membership" && !rightOperand.equals("ACTIVE") ) from $constraints
+then
+    $errors.add("Membership rightOperand must be ACTIVE");
+end
+
+rule "LocationPolicy Validation: unsupported location"
 when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $permissions : permissions) from $policy
@@ -42,7 +52,7 @@ then
     $errors.add("LocationPolicy: Location must be a valid ISO country code");
 end
 
-rule "LocationPolicy Validation in prohibition"
+rule "LocationPolicy Validation: in prohibition"
 when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $prohibitions : prohibitions ) from $policy
@@ -67,9 +77,19 @@ when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $permissions : permissions ) from $policy
     Rule( $constraints : constraints ) from $permissions
-    Constraint( leftOperand == "NumberOfTransfers" && !isBiggerThenZero(rightOperand) ) from $constraints
+    Constraint( leftOperand == "NumberOfTransfers" && !isValueGreaterThenZero(rightOperand) ) from $constraints
 then
     $errors.add("CountPolicy: NumberOfTransfers must be a positive integer");
+end
+
+rule "CountPolicy Validation: wrong operator"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $permissions : permissions ) from $policy
+    Rule( $constraints : constraints ) from $permissions
+    Constraint( leftOperand == "NumberOfTransfers" && !operator.matches("(lt|lteq)") ) from $constraints
+then
+    $errors.add("CountPolicy: NumberOfTransfers must be less than or equal to");
 end
 
 rule "TimeFramePolicy validation: start date after end date"
@@ -79,88 +99,43 @@ when
 then
     $errors.add("TimeFramePolicy: Start date must be before end date");
 end
-/*
-rule "IsDataspaceMember Policy Validation"
-when
-    $policy: Policy(
-        $permissions: permissions != null,
-        $permission: permissions[0],
-        $constraints: $permission.constraints != null,
-        $constraint: $constraints[0],
-        eval($constraint.getLeftOperand().equals("isMember") &&
-             $constraint.getOperator().equals("eq"))
-    )
-then
-    if (!$policy.getAssignee().startsWith("http")) {
 
-    }
+rule "TimeFramePolicy Validation: rightoperand matches regex"
+when
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $permissions : permissions ) from $policy
+    Rule( $constraints : constraints ) from $permissions
+    Constraint( leftOperand.equals("DateTime") && !rightOperand.matches("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z") ) from $constraints
+then
+    $errors.add("TimeFramePolicy: Right operand must be a date in ISO 8601 format");
 end
 
-rule "AccessPolicy Validation"
+rule "BillingPolicy Validation: must be positive"
 when
-    $policy: Policy(
-        assignee != null,
-        $permissions: permissions != null
-    )
+    PolicyValidation( $policy : policy, $errors : errors )
+        Policy( $duties : duties ) from $policy
+        Rule( $constraints : constraints ) from $duties
+        Constraint( leftOperand.equals("payment") && !isValueGreaterThenZero(rightOperand) ) from $constraints
 then
-    // Verify assignee URI format
-    if (!$policy.getAssignee().startsWith("http")) {
-        validationErrors.add("AccessPolicy: Assignee must be a valid URI");
-    }
+    $errors.add("BillingPolicy: Payment must be a positive number");
 end
 
-rule "CountPolicy Validation"
+rule "BillingPolicy: payment must only appear in duty"
 when
-    $policy: Policy(
-        $permissions: permissions != null,
-        $permission: permissions[0],
-        $constraints: $permission.constraints != null,
-        $constraint: $constraints[0],
-        eval($constraint.getLeftOperand().equals("count") &&
-             $constraint.getOperator().matches("(lt|lteq|eq)"))
-    )
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $permissions : permissions ) from $policy
+    Rule( $constraints : constraints ) from $permissions
+    Constraint( leftOperand == "payment" ) from $constraints
 then
-    try {
-        Integer.parseInt($constraint.getRightOperand());
-    } catch (NumberFormatException e) {
-        validationErrors.add("CountPolicy: Count value must be a number");
-    }
+    $errors.add("BillingPolicy: Payment must appear in duty");
 end
 
-rule "TimeFramePolicy Validation"
+rule "BillingPolicy: payment must only appear in duty not in prohibition"
 when
-    $policy: Policy(
-        $permissions: permissions != null,
-        $permission: permissions[0],
-        $constraints: $permission.constraints != null,
-        $constraint: $constraints[0],
-        eval($constraint.getLeftOperand().equals("DateTime"))
-    )
+    PolicyValidation( $policy : policy, $errors : errors )
+    Policy( $prohibitions : prohibitions ) from $policy
+    Rule( $constraints : constraints ) from $prohibitions
+    Constraint( leftOperand == "payment" ) from $constraints
 then
-    String dateTimePattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z";
-    if (!$constraint.getRightOperand().matches(dateTimePattern)) {
-        validationErrors.add("TimeFramePolicy: Invalid datetime format. Use ISO 8601 format");
-    }
+    $errors.add("BillingPolicy: Payment must appear in duty");
 end
-
-
-rule "BillingPolicy Validation"
-when
-    $policy: Policy(
-        $permissions: permissions != null,
-        $permission: permissions[0],
-        $constraints: $permission.constraints != null,
-        $constraint: $constraints[0],
-        eval($constraint.getLeftOperand().equals("payment"))
-    )
-then
-    try {
-        Double amount = Double.parseDouble($constraint.getRightOperand());
-        if (amount <= 0) {
-            validationErrors.add("BillingPolicy: Payment amount must be greater than 0");
-        }
-    } catch (NumberFormatException e) {
-        validationErrors.add("BillingPolicy: Invalid payment amount format");
-    }
-end
-*/

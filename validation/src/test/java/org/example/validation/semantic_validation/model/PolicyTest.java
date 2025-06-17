@@ -15,6 +15,8 @@ class PolicyTest {
                       "@context": "http://www.w3.org/ns/odrl.jsonld",
                       "@type": "Set",
                       "uid": "http://example.com/policy:9090",
+                      "duty": [],
+                      "prohibition": [],
                       "permission": [{
                         "action": ["use"],
                         "target": "http://example.com/asset:2002",
