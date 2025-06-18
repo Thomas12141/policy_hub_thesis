@@ -25,18 +25,20 @@ public class PolicyController {
         try {
             String uid = extractUid(jsonPolicy);
             List<String> errors = service.save(uid, jsonPolicy);
-            if (!errors.isEmpty()) {
-                return ResponseEntity.badRequest().body("Invalid policy:\n" +
-                    errors.stream().reduce("", (a, b) -> a + "\n" + b));
+            if(errors.isEmpty() ) {
+                return ResponseEntity.ok("Policy stored with UID: " + uid );
+            } else {
+                return ResponseEntity.badRequest().body(errors.stream().reduce("", (a, b) -> a + "\n" + b));
             }
-            return ResponseEntity.ok("Policy stored with UID: " + uid);
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body("Invalid policy: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Internal server error: " + e.getMessage());
         }
     }
 
     @GetMapping("/{uid}")
-    public ResponseEntity<String> getPolicy(@PathVariable String uid) {
+    public ResponseEntity<?> getPolicy(@PathVariable String uid) {
         return service.findByUid(uid)
                 .map(policy -> ResponseEntity.ok().body(policy.getJsonContent()))
                 .orElse(ResponseEntity.notFound().build());

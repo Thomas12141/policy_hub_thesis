@@ -7,6 +7,7 @@ import org.example.validation.Type;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,16 +22,16 @@ public class PolicyService {
 
     public List<String> save(String uid, String jsonContent) {
         ConcurrentAllValidatorsValidator validator = new ConcurrentAllValidatorsValidator();
-        List<String> result = validator.validate(jsonContent, Type.JSON);
-        if (!result.isEmpty()) {
-            return result;
+        List<String> errors = validator.validate(jsonContent, Type.JSON);
+        if (!errors.isEmpty()) {
+            return errors;
         }
         PolicyEntity entity = new PolicyEntity();
         entity.setUid(uid);
         entity.setJsonContent(jsonContent);
         entity.setUploadedAt(LocalDateTime.now());
         repository.save(entity);
-        return List.of();
+        return Collections.emptyList();
     }
 
     public Optional<PolicyEntity> findByUid(String uid) {
