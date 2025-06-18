@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 @Timeout(value = 1, unit = TimeUnit.SECONDS)
-class SyntaxValidatorTests {
+class SyntaxValidatorTest {
 
     private static final SyntaxValidator validator = new SyntaxValidator();
 
@@ -456,7 +456,6 @@ class SyntaxValidatorTests {
         assertThat(result).isEmpty();
     }
 
-    /*
     @Test
     void ValidAgreement_YAML() {
         //Arrange
@@ -495,7 +494,8 @@ class SyntaxValidatorTests {
         List<String> result = validator.validate(policy, Type.YAML);
 
         //Assert
-        assertThat(result).isEmpty();
+        assertThat(result).hasSize(1).
+            anyMatch(s -> s.contains("\"Policy\", \"Set\", \"Offer\", \"Agreement\""));
     }
 
     @Test
@@ -535,7 +535,7 @@ class SyntaxValidatorTests {
               - action: [ "display" ]
                 target: "http://example.com/asset:img"
                 constraint:
-                  - leftOperand: "spatial"
+                  - leftOperand: "location"
                     operator: "eq"
                     rightOperand: "eu"
         """;
@@ -546,7 +546,6 @@ class SyntaxValidatorTests {
         //Assert
         assertThat(result).isEmpty();
     }
-    */
 
     @Test
     void PolicyWithDateTime_JSON() {

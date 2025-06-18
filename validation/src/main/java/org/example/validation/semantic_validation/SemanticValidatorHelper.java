@@ -14,8 +14,14 @@ public class SemanticValidatorHelper {
     private SemanticValidatorHelper() {
     }
 
-    protected static final Set<String> SUPPORTED_LOCALES = new HashSet<>(Arrays.stream(Locale.
-        getISOCountries()).map(String::toUpperCase).toList());
+    protected static final Set<String> SUPPORTED_LOCALES;
+
+    static {
+        SUPPORTED_LOCALES = new HashSet<>(Arrays.stream(Locale.
+            getISOCountries()).map(String::toUpperCase).toList());
+
+        SUPPORTED_LOCALES.add("EU");
+    }
 
     public static boolean isSupportedLocale(String rightValue) {
         return SUPPORTED_LOCALES.contains(rightValue.toUpperCase());

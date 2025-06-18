@@ -131,7 +131,7 @@ class SemanticValidationTest {
                 "constraint": [{
                   "leftOperand": "location",
                   "operator": "eq",
-                  "rightOperand": "DE"
+                  "rightOperand": "eu"
                 }]
               }]
             }""";
