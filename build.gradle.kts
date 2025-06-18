@@ -15,7 +15,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
     implementation("org.postgresql:postgresql")
+    implementation("org.projectlombok:lombok:1.18.38")
+    implementation(project(":validation"))
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
