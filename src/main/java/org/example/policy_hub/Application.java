@@ -1,4 +1,4 @@
-package org.example.policy_hub.application;
+package org.example.policy_hub;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

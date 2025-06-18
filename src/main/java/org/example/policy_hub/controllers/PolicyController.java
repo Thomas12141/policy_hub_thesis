@@ -1,7 +1,6 @@
 package org.example.policy_hub.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.policy_hub.entities.PolicyEntity;
 import org.example.policy_hub.services.PolicyService;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,7 @@ public class PolicyController {
     public ResponseEntity<String> uploadPolicy(@RequestBody String jsonPolicy) {
         try {
             String uid = extractUid(jsonPolicy);
+            System.out.println("UID: " + uid);
             List<String> errors = service.save(uid, jsonPolicy);
             if(errors.isEmpty() ) {
                 return ResponseEntity.ok("Policy stored with UID: " + uid );
@@ -37,14 +37,14 @@ public class PolicyController {
         }
     }
 
-    @GetMapping("/{uid}")
-    public ResponseEntity<?> getPolicy(@PathVariable String uid) {
+    @GetMapping
+    public ResponseEntity<String> getPolicy(@RequestParam("uid") String uid) {
         return service.findByUid(uid)
                 .map(policy -> ResponseEntity.ok().body(policy.getJsonContent()))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<String> listAll() {
         return service.findAll().stream().map(PolicyEntity::getJsonContent).toList();
     }

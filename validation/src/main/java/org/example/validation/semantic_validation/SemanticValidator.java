@@ -1,5 +1,7 @@
 package org.example.validation.semantic_validation;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import org.example.validation.Type;
 import org.example.validation.Validator;
 import org.example.validation.semantic_validation.model.Policy;
@@ -60,11 +62,15 @@ public class SemanticValidator implements Validator {
 
 
     private KieContainer initializeKieContainer() {
-        String rulesFilePath = "src/main/resources/rules/policy-rules.drl";
         KieServices ks = KieServices.Factory.get();
         KieFileSystem kfs = ks.newKieFileSystem();
-        try {
-            kfs.write(rulesFilePath, Files.readAllLines(Paths.get(rulesFilePath)).stream().reduce("", (a, b) -> a + "\n" + b));
+
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rules/policy-rules.drl")) {
+            if (inputStream == null) {
+                throw new FileNotFoundException("rules/policy-rules.drl not found in classpath");
+            }
+            String rule = new String(inputStream.readAllBytes());
+            kfs.write("src/main/resources/rules/policy-rules.drl", rule);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

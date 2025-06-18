@@ -19,6 +19,7 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("org.projectlombok:lombok:1.18.38")
     implementation(project(":validation"))
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))

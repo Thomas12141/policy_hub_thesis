@@ -1,6 +1,8 @@
 package org.example.validation.syntax_validation;
 
 import com.networknt.schema.*;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import org.example.validation.Type;
 import org.example.validation.Validator;
 import org.slf4j.Logger;
@@ -41,7 +43,15 @@ public class SyntaxValidator implements Validator {
         JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
         SchemaValidatorsConfig config = SchemaValidatorsConfig.builder().build();
         Path schemaPath = Paths.get("src/main/resources/schemas/policy.schema.json");
-        String schemaData = Files.readString(schemaPath);
+        String schemaData;
+        try (InputStream inputStream = SyntaxValidator.class.getClassLoader().getResourceAsStream("schemas/policy.schema.json")) {
+            if (inputStream == null) {
+                throw new FileNotFoundException("schemas/policy.schema.json not found in classpath");
+            }
+            schemaData = new String(inputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return jsonSchemaFactory.getSchema(schemaData, InputFormat.JSON, config);
     }
 }

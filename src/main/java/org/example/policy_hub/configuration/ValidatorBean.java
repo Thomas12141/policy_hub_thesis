@@ -6,10 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ValidatorConfiguration {
-
-    @Bean
-    public Validator validator() {
-        return new ConcurrentAllValidatorsValidator();
-    }
+public class ValidatorBean {
+  @Bean
+  public Validator getValidator() {
+    return new ConcurrentAllValidatorsValidator();
+  }
 }
