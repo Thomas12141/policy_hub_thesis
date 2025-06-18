@@ -21,26 +21,30 @@ public class PolicyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> uploadPolicy(@RequestBody String jsonPolicy) {
+    public ResponseEntity<String> uploadPolicy(@RequestBody String jsonPolicy) {
         try {
             String uid = extractUid(jsonPolicy);
-            PolicyEntity saved = service.save(uid, jsonPolicy);
-            return ResponseEntity.ok("Policy stored with UID: " + saved.getUid());
+            List<String> errors = service.save(uid, jsonPolicy);
+            if (!errors.isEmpty()) {
+                return ResponseEntity.badRequest().body("Invalid policy:\n" +
+                    errors.stream().reduce("", (a, b) -> a + "\n" + b));
+            }
+            return ResponseEntity.ok("Policy stored with UID: " + uid);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Invalid policy: " + e.getMessage());
         }
     }
 
     @GetMapping("/{uid}")
-    public ResponseEntity<?> getPolicy(@PathVariable String uid) {
+    public ResponseEntity<String> getPolicy(@PathVariable String uid) {
         return service.findByUid(uid)
                 .map(policy -> ResponseEntity.ok().body(policy.getJsonContent()))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public List<String> listAllUids() {
-        return service.findAll().stream().map(PolicyEntity::getUid).toList();
+    public List<String> listAll() {
+        return service.findAll().stream().map(PolicyEntity::getJsonContent).toList();
     }
 
     private String extractUid(String jsonPolicy) throws JsonProcessingException {
