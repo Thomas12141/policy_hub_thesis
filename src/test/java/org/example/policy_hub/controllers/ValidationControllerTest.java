@@ -30,8 +30,6 @@ public class ValidationControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-
-
   @Test
   void invalidPolicy() throws Exception {
     //Arrange

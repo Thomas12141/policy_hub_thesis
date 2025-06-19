@@ -222,8 +222,7 @@
             "type": "string",
             "format": "uri"
           }
-        },
-        "required": ["action","constraint"]
+        }
       }
     },
     "policy": {
