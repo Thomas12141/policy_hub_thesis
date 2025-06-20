@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,15 +29,12 @@ public class SyntaxValidator implements Validator {
         } catch (InvalidPathException e) {
             logger.error("Invalid path of JSON schema", e);
             return List.of("Internal server error");
-        } catch (IOException e) {
-            logger.error("IO error while reading JSON schema", e);
-            return List.of("Internal server error");
         }
         Set<ValidationMessage> errors = schema.validate(input, type == Type.JSON ? InputFormat.JSON : InputFormat.YAML);
         return errors.stream().map(ValidationMessage::getMessage).toList();
     }
 
-    private static JsonSchema getJSONSchema() throws IOException {
+    private static JsonSchema getJSONSchema() {
 
         JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
         SchemaValidatorsConfig config = SchemaValidatorsConfig.builder().build();

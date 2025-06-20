@@ -55,7 +55,7 @@ public class SemanticValidatorHelper {
     }
 
     public static boolean isValueGreaterThenZero(String rightValue) {
-        Double value;
+        double value;
         try {
             value = Double.parseDouble(rightValue);
         } catch (NumberFormatException e) {

@@ -3,6 +3,9 @@ plugins {
     id("application")
 }
 
+group = "org.example"
+version = "1.0-SNAPSHOT"
+
 repositories {
     mavenCentral()
 }
@@ -15,5 +18,6 @@ dependencies {
     implementation("org.eclipse.edc:verifiable-credentials-spi:0.13.0")
 
     implementation("org.eclipse.edc:control-plane-core:0.13.0")
+
 
 }

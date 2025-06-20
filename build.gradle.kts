@@ -9,6 +9,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("org.projectlombok:lombok:1.18.38")
     implementation(project(":validation"))
+    implementation(project(":policy_evaluation"))
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 

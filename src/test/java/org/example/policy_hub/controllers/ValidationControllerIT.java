@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureMockMvc
 @Testcontainers(disabledWithoutDocker = true)
 @Transactional
-public class ValidationControllerTest {
+public class ValidationControllerIT {
 
   @Container
   @ServiceConnection

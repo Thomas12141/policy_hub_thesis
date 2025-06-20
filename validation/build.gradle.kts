@@ -26,7 +26,6 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
     testImplementation(project(":test-utils"))
     testImplementation("org.skyscreamer:jsonassert:1.5.3")
-
 }
 
 tasks.test {

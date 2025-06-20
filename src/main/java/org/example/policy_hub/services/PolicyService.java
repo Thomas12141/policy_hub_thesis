@@ -1,5 +1,6 @@
 package org.example.policy_hub.services;
 
+import jakarta.transaction.Transactional;
 import org.example.policy_hub.entities.PolicyEntity;
 import org.example.policy_hub.repositry.PolicyRepository;
 import org.example.validation.ConcurrentAllValidatorsValidator;
@@ -20,6 +21,7 @@ public class PolicyService {
         this.repository = repository;
     }
 
+    @Transactional
     public List<String> save(String uid, String jsonContent) {
         ConcurrentAllValidatorsValidator validator = new ConcurrentAllValidatorsValidator();
         List<String> errors = validator.validate(jsonContent, Type.JSON);
@@ -30,6 +32,9 @@ public class PolicyService {
         entity.setUid(uid);
         entity.setJsonContent(jsonContent);
         entity.setUploadedAt(LocalDateTime.now());
+        if(repository.findByUid(uid).isPresent()) {
+            return List.of("Policy with uid " + uid + " already exists");
+        }
         repository.save(entity);
         return Collections.emptyList();
     }

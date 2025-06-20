@@ -3,11 +3,13 @@ package org.example.policy_hub.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.policy_hub.entities.PolicyEntity;
 import org.example.policy_hub.services.PolicyService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/policies")
@@ -23,7 +25,9 @@ public class PolicyController {
     public ResponseEntity<String> uploadPolicy(@RequestBody String jsonPolicy) {
         try {
             String uid = extractUid(jsonPolicy);
-            System.out.println("UID: " + uid);
+            if(uid == null || uid.isBlank()) {
+                return ResponseEntity.badRequest().body("uid is missing or blank");
+            }
             List<String> errors = service.save(uid, jsonPolicy);
             if(errors.isEmpty() ) {
                 return ResponseEntity.ok("Policy stored with UID: " + uid );
@@ -45,13 +49,30 @@ public class PolicyController {
     }
 
     @GetMapping("/all")
-    public List<String> listAll() {
-        return service.findAll().stream().map(PolicyEntity::getJsonContent).toList();
+    public ResponseEntity<List<JsonNode>> listAll() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<JsonNode> policies = service.findAll().stream()
+                    .map(PolicyEntity::getJsonContent)
+                    .map(content -> {
+                        try {
+                            return mapper.readTree(content);
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(policies);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     private String extractUid(String jsonPolicy) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode json = objectMapper.readTree(jsonPolicy);
-        return json.get("uid").asText();
+        return json.get("uid") == null ? null : json.get("uid").asText();
     }
 }
