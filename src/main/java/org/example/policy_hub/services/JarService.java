@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.example.JarPackager;
 import org.example.policy_hub.entities.JarEntity;
-import org.example.policy_hub.repositry.JarRepository;
+import org.example.policy_hub.repositories.JarRepository;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
