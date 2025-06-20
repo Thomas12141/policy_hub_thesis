@@ -5,6 +5,12 @@ plugins {
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 repositories {
     mavenCentral()
     maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }

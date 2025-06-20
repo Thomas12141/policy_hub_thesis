@@ -3,7 +3,7 @@ package org.example.policy_hub.services;
 import jakarta.transaction.Transactional;
 import org.example.policy_hub.entities.PolicyEntity;
 import org.example.policy_hub.repositry.PolicyRepository;
-import org.example.validation.ConcurrentAllValidatorsValidator;
+import org.example.validation.ParallelPolicyValidator;
 import org.example.validation.Type;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class PolicyService {
 
     @Transactional
     public List<String> save(String uid, String jsonContent) {
-        ConcurrentAllValidatorsValidator validator = new ConcurrentAllValidatorsValidator();
+        ParallelPolicyValidator validator = new ParallelPolicyValidator();
         List<String> errors = validator.validate(jsonContent, Type.JSON);
         if (!errors.isEmpty()) {
             return errors;

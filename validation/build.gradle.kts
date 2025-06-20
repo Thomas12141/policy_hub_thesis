@@ -9,6 +9,12 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 dependencies {
     implementation("org.drools:drools-core:10.0.0")
     implementation("org.drools:drools-compiler:10.0.0")

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id"})
-@SequenceGenerator(name = "jar_seq", sequenceName = "jar_sequence", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "jar_seq", sequenceName = "jar_sequence", allocationSize = 1)
 public class JarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jar_seq")

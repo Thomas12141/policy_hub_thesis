@@ -20,6 +20,7 @@ public class LocationConstraintFunction implements AtomicConstraintRuleFunction<
   @Override
   public boolean evaluate(Operator operator, Object rightValue, Permission rule,
       ContractNegotiationPolicyContext context) {
+    monitor.info("Evaluating location constraint.");
     var region = context.participantAgent().getClaims().get("region");
 
     return switch (operator) {

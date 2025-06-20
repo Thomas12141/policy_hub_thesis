@@ -1,5 +1,12 @@
 plugins {
-    id("java")
+    `java-library`
+    id("application")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 group = "org.example"
@@ -10,10 +17,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
+    api("org.eclipse.edc:data-plane-spi:0.13.0")
+    api("org.eclipse.edc:json-ld-spi:0.13.0")
 
-tasks.test {
-    useJUnitPlatform()
+    implementation("org.eclipse.edc:control-plane-core:0.13.0")
+
+
 }

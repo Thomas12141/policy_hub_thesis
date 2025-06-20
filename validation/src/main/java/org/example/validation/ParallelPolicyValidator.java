@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
-public class ConcurrentAllValidatorsValidator implements Validator {
-    private static final Logger logger = LoggerFactory.getLogger(ConcurrentAllValidatorsValidator.class);
+public class ParallelPolicyValidator implements Validator {
+    private static final Logger logger = LoggerFactory.getLogger(ParallelPolicyValidator.class);
 
     private static final Set<Validator> validators = Set.of(new SyntaxValidator(), new SemanticValidator());
 

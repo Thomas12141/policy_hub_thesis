@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +36,6 @@ public class SyntaxValidator implements Validator {
 
         JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
         SchemaValidatorsConfig config = SchemaValidatorsConfig.builder().build();
-        Path schemaPath = Paths.get("src/main/resources/schemas/policy.schema.json");
         String schemaData;
         try (InputStream inputStream = SyntaxValidator.class.getClassLoader().getResourceAsStream("schemas/policy.schema.json")) {
             if (inputStream == null) {
