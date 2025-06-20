@@ -42,12 +42,12 @@ then
     $errors.add("Membership rightOperand must be ACTIVE");
 end
 
-rule "LocationPolicy Validation: unsupported location"
+rule "LocationPolicy Validation: unsupported Location"
 when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $permissions : permissions) from $policy
     Rule( $dutyConstraints : constraints ) from $permissions
-    Constraint( leftOperand == "location" && !isSupportedLocale(rightOperand) ) from $dutyConstraints
+    Constraint( leftOperand == "Location" && !isSupportedLocale(rightOperand) ) from $dutyConstraints
 then
     $errors.add("LocationPolicy: Location must be a valid ISO country code");
 end
@@ -57,7 +57,7 @@ when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $prohibitions : prohibitions ) from $policy
     Rule( $dutyConstraints : constraints ) from $prohibitions
-    Constraint( leftOperand == "location" && !isSupportedLocale(rightOperand) ) from $dutyConstraints
+    Constraint( leftOperand == "Location" && !isSupportedLocale(rightOperand) ) from $dutyConstraints
 then
     $errors.add("LocationPolicy: Location must be a valid ISO country code");
 end
@@ -67,7 +67,7 @@ when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $duties : duties ) from $policy
     Rule( $dutyConstraints : constraints ) from $duties
-    Constraint( leftOperand == "location") from $dutyConstraints
+    Constraint( leftOperand == "Location") from $dutyConstraints
 then
     $errors.add("LocationPolicy: Location must not be in duty");
 end
