@@ -1,4 +1,4 @@
-package org.example.policy_hub.repositry;
+package org.example.policy_hub.repositories;
 
 import org.example.policy_hub.entities.PolicyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

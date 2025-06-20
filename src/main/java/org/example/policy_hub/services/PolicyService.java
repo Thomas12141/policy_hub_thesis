@@ -2,7 +2,7 @@ package org.example.policy_hub.services;
 
 import jakarta.transaction.Transactional;
 import org.example.policy_hub.entities.PolicyEntity;
-import org.example.policy_hub.repositry.PolicyRepository;
+import org.example.policy_hub.repositories.PolicyRepository;
 import org.example.validation.ConcurrentAllValidatorsValidator;
 import org.example.validation.Type;
 import org.springframework.stereotype.Service;
