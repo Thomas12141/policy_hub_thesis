@@ -1,6 +1,9 @@
 package org.example.policy_hub.services;
 
 import jakarta.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.example.JarPackager;
 import org.example.policy_hub.entities.JarEntity;
 import org.example.policy_hub.repositry.JarRepository;
@@ -29,7 +32,7 @@ public class JarService {
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
         JarPackager packager = new JarPackager();
         String projectRoot = System.getProperty("user.dir");
         String modulesPath = projectRoot + "/policy_evaluation/edc_extension_storage";
@@ -38,6 +41,9 @@ public class JarService {
                 filter(folder -> !folder.endsWith("jars")).
                 toList();
 
+        Files.createDirectories(Paths.get(modulesPath + "/jars"));
+
+        modules.forEach(moduleName -> packager.packModulesIntoJars(List.of(moduleName)));
         for ( String moduleName : modules) {
             if (repository.findByName(moduleName).isPresent()) {
                 continue;
@@ -55,7 +61,6 @@ public class JarService {
                             : moduleToDescription.get(moduleName));
             repository.save(jarEntity);
         }
-        modules.forEach(moduleName -> packager.packModulesIntoJars(List.of(moduleName)));
     }
 
     public List<JarEntity> getAllJars() {

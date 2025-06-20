@@ -30,7 +30,7 @@ class JarControllerIT {
     private MockMvc mockMvc;
 
     @Test
-    void getAllJars() throws Exception {
+    void getAllJars_Valid() throws Exception {
         //Arrange
         String url = "/api/jars";
 
@@ -42,7 +42,7 @@ class JarControllerIT {
     }
 
     @Test
-    void getJar() throws Exception {
+    void getJar_Valid() throws Exception {
         //Arrange
         String url = "/api/jars/download/AccessPolicy";
 
@@ -51,5 +51,17 @@ class JarControllerIT {
 
         //Assert
         resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    void getJar_Invalid_NotExists() throws Exception {
+        //Arrange
+        String url = "/api/jars/download/NotExists";
+
+        //Act
+        ResultActions resultActions = mockMvc.perform(get(url));
+
+        //Assert
+        resultActions.andExpect(status().isNotFound());
     }
 }

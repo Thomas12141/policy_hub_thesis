@@ -155,7 +155,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "location",
+                  "leftOperand": "Location",
                   "operator": "eq",
                   "rightOperand": "INVALID"
                 }]
