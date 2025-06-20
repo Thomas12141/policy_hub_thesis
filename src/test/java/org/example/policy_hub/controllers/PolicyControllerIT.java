@@ -10,7 +10,6 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -18,6 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -117,7 +117,7 @@ public class PolicyControllerIT {
         ResultActions resultActionsPost = mockMvc.perform(post(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(policy));
-        ResultActions resultActionsGet = mockMvc.perform(MockMvcRequestBuilders.get("/api/policies?uid=http://example.com/policy:1234"));
+        ResultActions resultActionsGet = mockMvc.perform(get("/api/policies?uid=http://example.com/policy:1234"));
 
         //Assert
         resultActionsPost.andExpect(status().isOk());
@@ -167,7 +167,7 @@ public class PolicyControllerIT {
         ResultActions secondResultActionsPost = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(secondPolicy));
-        ResultActions getAllPolicies = mockMvc.perform(MockMvcRequestBuilders.get("/api/policies/all"));
+        ResultActions getAllPolicies = mockMvc.perform(get("/api/policies/all"));
         JSONArray jsonArray = new JSONArray(getAllPolicies.andReturn().getResponse().getContentAsString());
 
         //Assert
@@ -221,7 +221,7 @@ public class PolicyControllerIT {
         ResultActions secondResultActionsPost = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(secondPolicy));
-        ResultActions getAllPolicies = mockMvc.perform(MockMvcRequestBuilders.get("/api/policies/all"));
+        ResultActions getAllPolicies = mockMvc.perform(get("/api/policies/all"));
         JSONArray jsonArray = new JSONArray(getAllPolicies.andReturn().getResponse().getContentAsString());
 
         //Assert

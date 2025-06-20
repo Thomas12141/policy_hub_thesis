@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "policies")
 @Getter
 @Setter
 public class PolicyEntity {

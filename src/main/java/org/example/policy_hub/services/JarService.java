@@ -9,12 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
 public class JarService {
+
+    private final Map<String, String> moduleToDescription = Map.of("AccessPolicy",
+            "grants for one or many defined participants access, every participant must have an id defined, the policy " +
+                    "lets the provider to define several participants as allowed to access the asset.",
+            "IsDataspaceMember","checks if the connector a participant of the dataspace.");
+
     private final JarRepository repository;
 
     public JarService(JarRepository repository) {
@@ -43,6 +50,9 @@ public class JarService {
             JarEntity jarEntity = new JarEntity();
             jarEntity.setName(moduleName);
             jarEntity.setFilePath(jarFile.toPath().toString());
+            jarEntity.setDescription(
+                    moduleToDescription.get(moduleName) == null ? "No description for this extension."
+                            : moduleToDescription.get(moduleName));
             repository.save(jarEntity);
         }
         modules.forEach(moduleName -> packager.packModulesIntoJars(List.of(moduleName)));

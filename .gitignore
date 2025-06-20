@@ -3,6 +3,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+/policy_evaluation/edc_extension_storage/jars/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

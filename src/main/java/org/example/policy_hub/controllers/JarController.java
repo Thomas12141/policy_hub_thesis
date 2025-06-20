@@ -1,5 +1,9 @@
 package org.example.policy_hub.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.policy_hub.entities.JarEntity;
 import org.example.policy_hub.services.JarService;
 import org.springframework.core.io.Resource;
@@ -23,14 +27,21 @@ public class JarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JarEntity>> listAllJars() {
-        return ResponseEntity.ok(jarService.getAllJars());
+    public ResponseEntity<List<ObjectNode>> listAllJars() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<JarEntity> jars = jarService.getAllJars();
+        List<ObjectNode> jsonNodes = jars.stream().map(mapper::valueToTree).map(node -> (ObjectNode) node).toList();
+        jsonNodes.forEach(jsonNode -> jsonNode.remove("filePath"));
+        return ResponseEntity.ok(jsonNodes);
     }
 
     @GetMapping("/download/{moduleName}")
     public ResponseEntity<Resource> downloadJar(@PathVariable String moduleName) {
         try {
             Resource jarResource = jarService.getJarByName(moduleName);
+            if (jarResource == null || !jarResource.exists() || !jarResource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
 
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
