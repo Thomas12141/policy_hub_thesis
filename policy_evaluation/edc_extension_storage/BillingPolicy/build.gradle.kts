@@ -1,6 +1,12 @@
 plugins {
-    jacoco
-    id("java")
+    `java-library`
+    id("application")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 group = "org.example"
@@ -10,15 +16,15 @@ repositories {
     mavenCentral()
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
-}
-
 dependencies {
+    api("org.eclipse.edc:data-plane-spi:0.13.0")
+    api("org.eclipse.edc:json-ld-spi:0.13.0")
+
+    implementation("org.eclipse.edc:control-plane-core:0.13.0")
+
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.assertj:assertj-core:3.27.3")
 }
 
 tasks.test {

@@ -342,7 +342,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "payment",
+                  "leftOperand": "Payment",
                   "operator": "eq",
                   "rightOperand": "99.99"
                 }]
@@ -368,7 +368,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "payment",
+                  "leftOperand": "Payment",
                   "operator": "eq",
                   "rightOperand": "-10.00"
                 }]
@@ -394,7 +394,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "payment",
+                  "leftOperand": "Payment",
                   "operator": "eq",
                   "rightOperand": "invalid"
                 }]
@@ -420,7 +420,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "payment",
+                  "leftOperand": "Payment",
                   "operator": "eq",
                   "rightOperand": "3"
                 }]
@@ -446,7 +446,7 @@ class SemanticValidationTest {
                 "action": "use",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
-                  "leftOperand": "payment",
+                  "leftOperand": "Payment",
                   "operator": "eq",
                   "rightOperand": "invalid"
                 }]

@@ -115,7 +115,7 @@ when
     PolicyValidation( $policy : policy, $errors : errors )
         Policy( $duties : duties ) from $policy
         Rule( $constraints : constraints ) from $duties
-        Constraint( leftOperand.equals("payment") && !isValueGreaterThenZero(rightOperand) ) from $constraints
+        Constraint( leftOperand.equals("Payment") && !isValueGreaterThenZero(rightOperand) ) from $constraints
 then
     $errors.add("BillingPolicy: Payment must be a positive number");
 end
@@ -125,7 +125,7 @@ when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $permissions : permissions ) from $policy
     Rule( $constraints : constraints ) from $permissions
-    Constraint( leftOperand == "payment" ) from $constraints
+    Constraint( leftOperand == "Payment" ) from $constraints
 then
     $errors.add("BillingPolicy: Payment must appear in duty");
 end
@@ -135,7 +135,7 @@ when
     PolicyValidation( $policy : policy, $errors : errors )
     Policy( $prohibitions : prohibitions ) from $policy
     Rule( $constraints : constraints ) from $prohibitions
-    Constraint( leftOperand == "payment" ) from $constraints
+    Constraint( leftOperand == "Payment" ) from $constraints
 then
     $errors.add("BillingPolicy: Payment must appear in duty");
 end
