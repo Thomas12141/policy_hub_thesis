@@ -16,17 +16,17 @@ public class CountPolicyFunction implements AtomicConstraintRuleFunction<Permiss
     @Override
     public boolean evaluate(Operator operator, Object rightValue, Permission rule, TransferProcessPolicyContext context) {
         monitor.info("Evaluating count constraint.");
-        if(!(rightValue instanceof String) || Integer.parseInt(rightValue) < 1) {
+        if(!(rightValue instanceof String) || Integer.parseInt(rightValue.toString()) < 1) {
             return false;
         }
 
-        int limit = Integer.parseInt(rightValue);
-        int timesTransfered = InMemoryCounter.getInstance().get(new CounterKey(
+        int limit = Integer.parseInt(rightValue.toString());
+        int timesTransferred = InMemoryCounter.getInstance().get(new CounterKey(
             context.participantAgent().getIdentity(), context.contractAgreement().getAssetId()
         ));
-        return switch (Operator) {
-            case Operator.LT -> timesTransfered < limit;
-            case Operator.LEQ ->  timesTransfered <= limit;
+        return switch (operator) {
+            case Operator.LT -> timesTransferred < limit;
+            case Operator.LEQ ->  timesTransferred <= limit;
             default -> false;
         };
     }

@@ -15,10 +15,20 @@ dependencies {
     api("org.eclipse.edc:json-ld-spi:0.13.0")
 
     implementation("org.eclipse.edc:control-plane-core:0.13.0")
+
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
+    testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("org.mockito:mockito-core:2.1.0")
 }
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

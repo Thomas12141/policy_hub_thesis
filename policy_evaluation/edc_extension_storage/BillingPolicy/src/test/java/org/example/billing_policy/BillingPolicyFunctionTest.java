@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BillingPolicyFunctionTest {
     private final BillingPolicyFunction billingPolicyFunction = new BillingPolicyFunction(new Monitor() {});
+    private final InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
 
     @Mock
     private ContractAgreement contractAgreement;
@@ -39,7 +40,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -59,7 +59,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount + 1);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -79,7 +78,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount + 1);
         TransferProcessPolicyContext context = new TransferProcessPolicyContext(participantAgent, contractAgreement,
                 Instant.now());
@@ -97,7 +95,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount + 1);
         TransferProcessPolicyContext context = new TransferProcessPolicyContext(participantAgent, contractAgreement,
                 Instant.now());
@@ -115,7 +112,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount + 0.1);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -135,7 +131,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -155,7 +150,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount + 0.1);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -175,7 +169,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -195,7 +188,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -215,7 +207,6 @@ class BillingPolicyFunctionTest {
         String assetId = "assetId";
         String identity = "identity";
         double amount = 10.0;
-        InMemoryPaymentBook inMemoryPaymentBook = InMemoryPaymentBook.getInstance();
         inMemoryPaymentBook.addPayment(new PaymentKey(identity, assetId), amount);
         when(participantAgent.getIdentity()).thenReturn(identity);
         when(contractAgreement.getAssetId()).thenReturn(assetId);
@@ -225,7 +216,7 @@ class BillingPolicyFunctionTest {
                 filter(operator -> operator != Operator.EQ && operator != Operator.GT && operator != Operator.GEQ).
                 toList();
 
-        //ActbillingPolicyFunction.evaluate(Operator.GEQ, String.valueOf(amount), null, context)
+        //Act
         boolean result = notSupportedOperators.stream().
                 map(operator -> billingPolicyFunction.evaluate(operator, String.valueOf(amount), null, context)).
                 reduce(false, (a, b) -> a || b);

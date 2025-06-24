@@ -2,6 +2,7 @@ package org.example.count_policy;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.TransferProcessPolicyContext;
 import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessListener;
+import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessObservable;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
@@ -26,6 +27,9 @@ public class CountPolicyExtension implements ServiceExtension {
 
     @Inject
     private RuleBindingRegistry bindingRegistry;
+
+    @Inject
+    private TransferProcessObservable transferProcessObservable;
 
     @Override
     public void initialize(ServiceExtensionContext context) {

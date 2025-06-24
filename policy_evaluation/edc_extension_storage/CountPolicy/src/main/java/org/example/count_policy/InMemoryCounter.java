@@ -33,4 +33,8 @@ public class InMemoryCounter implements TransferCounter {
     public int get(CounterKey key) {
         return counter.getOrDefault(key, 0);
     }
+
+    public void clear() {
+        counter.clear();
+    }
 }
