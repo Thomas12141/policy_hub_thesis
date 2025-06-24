@@ -9,8 +9,8 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
+import static org.eclipse.edc.policy.model.OdrlNamespace.ODRL_SCHEMA;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 public class BillingPolicyExtension implements ServiceExtension {
@@ -29,7 +29,7 @@ public class BillingPolicyExtension implements ServiceExtension {
 
         var function = new BillingPolicyFunction(monitor);
 
-        bindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, ALL_SCOPES);
+        bindingRegistry.bind(ODRL_SCHEMA + "pay", ALL_SCOPES);
         bindingRegistry.bind(PAYMENT_CONSTRAINT_KEY, TransferProcessPolicyContext.TRANSFER_SCOPE);
         policyEngine.registerFunction(TransferProcessPolicyContext.class, Duty.class, PAYMENT_CONSTRAINT_KEY, function);
 
