@@ -26,7 +26,7 @@ public class TimeFramePolicyExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         Monitor monitor = context.getMonitor();
 
-        var function = new TimeFramePolicyConstraintFunction(monitor);
+        var function = new TimeFramePolicyFunction(monitor);
 
         bindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, ALL_SCOPES);
         bindingRegistry.bind(Time_CONSTRAINT_KEY, TransferProcessPolicyContext.TRANSFER_SCOPE);

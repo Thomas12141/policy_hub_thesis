@@ -10,11 +10,11 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
-public class TimeFramePolicyConstraintFunction implements AtomicConstraintRuleFunction<Rule, TransferProcessPolicyContext> {
+public class TimeFramePolicyFunction implements AtomicConstraintRuleFunction<Rule, TransferProcessPolicyContext> {
 
     private final Monitor monitor;
 
-    public TimeFramePolicyConstraintFunction(Monitor monitor) {
+    public TimeFramePolicyFunction(Monitor monitor) {
         this.monitor = monitor;
     }
 

@@ -10,6 +10,8 @@ public class BillingPolicyFunction implements AtomicConstraintRuleFunction<Duty,
 
     private final Monitor monitor;
 
+    private final PaymentBook paymentBook = InMemoryPaymentBook.getInstance();
+
     public BillingPolicyFunction(Monitor monitor) {
         this.monitor = monitor;
     }
@@ -17,7 +19,18 @@ public class BillingPolicyFunction implements AtomicConstraintRuleFunction<Duty,
 
     @Override
     public boolean evaluate(Operator operator, Object rightValue, Duty rule, TransferProcessPolicyContext context) {
-        //TODO: implement
-        return false;
-    }
+        monitor.info("Evaluating billing constraint.");
+        if (!(rightValue instanceof String) || Double.parseDouble((String) rightValue) < 0) {
+            return false;
+        }
+        double payed = paymentBook.getPayment(new PaymentKey(context.participantAgent().getIdentity(),
+                context.contractAgreement().getAssetId()));
+
+        return switch (operator) {
+            case EQ -> payed == Double.parseDouble((String) rightValue);
+            case GT -> payed > Double.parseDouble((String) rightValue);
+            case GEQ -> payed >= Double.parseDouble((String) rightValue);
+            default -> false;
+        };
+    };
 }
