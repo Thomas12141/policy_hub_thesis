@@ -339,7 +339,7 @@ class SemanticValidationTest {
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
               "duty": [{
-                "action": "use",
+                "action": "pay",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
                   "leftOperand": "Payment",
@@ -365,7 +365,7 @@ class SemanticValidationTest {
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
               "duty": [{
-                "action": "use",
+                "action": "pay",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
                   "leftOperand": "Payment",
@@ -391,7 +391,7 @@ class SemanticValidationTest {
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
               "duty": [{
-                "action": "use",
+                "action": "pay",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
                   "leftOperand": "Payment",
@@ -417,7 +417,7 @@ class SemanticValidationTest {
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
               "prohibition": [{
-                "action": "use",
+                "action": "pay",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
                   "leftOperand": "Payment",
@@ -443,7 +443,7 @@ class SemanticValidationTest {
               "@type": "Set",
               "uid": "http://example.com/policy:1234",
               "permission": [{
-                "action": "use",
+                "action": "pay",
                 "target": "http://example.com/resource:1234",
                 "constraint": [{
                   "leftOperand": "Payment",

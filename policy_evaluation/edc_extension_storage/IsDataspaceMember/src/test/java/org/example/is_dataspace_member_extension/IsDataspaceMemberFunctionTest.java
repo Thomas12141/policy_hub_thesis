@@ -87,7 +87,6 @@ class IsDataspaceMemberFunctionTest {
     @Test
     void Validate_EQ_VcIsNotAVcType_Failure() {
         //Arrange
-        var verifiableCredential = createCredentialBuilder().type("MembershipCredentialg").build();
         ParticipantAgent participantAgent =
                 new ParticipantAgent(Map.of("vc", List.of("")), Collections.emptyMap());
 
@@ -103,7 +102,6 @@ class IsDataspaceMemberFunctionTest {
     @Test
     void Validate_EQ_VcIsNotAList_Failure() {
         //Arrange
-        var verifiableCredential = createCredentialBuilder().type("MembershipCredentialg").build();
         ParticipantAgent participantAgent =
                 new ParticipantAgent(Map.of("vc", Collections.emptyMap()), Collections.emptyMap());
 
@@ -119,7 +117,6 @@ class IsDataspaceMemberFunctionTest {
     @Test
     void Validate_EQ_VcIsEmptyList_Failure() {
         //Arrange
-        var verifiableCredential = createCredentialBuilder().type("MembershipCredentialg").build();
         ParticipantAgent participantAgent =
                 new ParticipantAgent(Map.of("vc", Collections.emptyList()), Collections.emptyMap());
 
