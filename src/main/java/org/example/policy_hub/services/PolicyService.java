@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.example.policy_hub.entities.PolicyEntity;
 import org.example.policy_hub.repositories.PolicyRepository;
 import org.example.validation.ParallelPolicyValidator;
-import org.example.validation.Type;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,7 +23,7 @@ public class PolicyService {
     @Transactional
     public List<String> save(String uid, String jsonContent) {
         ParallelPolicyValidator validator = new ParallelPolicyValidator();
-        List<String> errors = validator.validate(jsonContent, Type.JSON);
+        List<String> errors = validator.validate(jsonContent);
         if (!errors.isEmpty()) {
             return errors;
         }

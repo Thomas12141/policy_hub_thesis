@@ -3,7 +3,6 @@ package org.example.validation.syntax_validation;
 import com.networknt.schema.*;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import org.example.validation.Type;
 import org.example.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ public class SyntaxValidator implements Validator {
     private static final Logger logger = LoggerFactory.getLogger(SyntaxValidator.class);
 
     @Override
-    public List<String> validate(String input, Type type) {
+    public List<String> validate(String input) {
         if (input == null) {
             return List.of("Policy is null");
         }
@@ -28,7 +27,7 @@ public class SyntaxValidator implements Validator {
             logger.error("Invalid path of JSON schema", e);
             return List.of("Internal server error");
         }
-        Set<ValidationMessage> errors = schema.validate(input, type == Type.JSON ? InputFormat.JSON : InputFormat.YAML);
+        Set<ValidationMessage> errors = schema.validate(input, InputFormat.JSON);
         return errors.stream().map(ValidationMessage::getMessage).toList();
     }
 

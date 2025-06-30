@@ -2,7 +2,6 @@ package org.example.validation.semantic_validation;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import org.example.validation.Type;
 import org.example.validation.Validator;
 import org.example.validation.semantic_validation.model.Policy;
 import org.example.validation.semantic_validation.model.PolicyValidation;
@@ -24,20 +23,13 @@ public class SemanticValidator implements Validator {
     }
 
     @Override
-    public List<String> validate(String policyContent, org.example.validation.Type formatType) {
+    public List<String> validate(String policyContent) {
 
         PolicyValidation policyValidation = new PolicyValidation();
         policyValidation.setErrors(new ArrayList<>());
 
         try {
-            Policy policy;
-            if (formatType == Type.JSON) {
-                policy = Policy.ofJSON(policyContent);
-            } else if (formatType == org.example.validation.Type.YAML) {
-                policy = Policy.ofYaml(policyContent);
-            } else {
-                throw new IllegalArgumentException("Unsupported format type: " + formatType);
-            }
+            Policy policy = Policy.ofJSON(policyContent);
             policyValidation.setPolicy(policy);
             try (KieSession kieSession = kieContainer.newKieSession()) {
 
@@ -51,7 +43,7 @@ public class SemanticValidator implements Validator {
             }
 
         } catch (Exception e) {
-            policyValidation.getErrors().add("Failed to parse policy (" + formatType + "): " + e.getMessage());
+            policyValidation.getErrors().add("Failed to parse policy: " + e.getMessage());
         }
 
         return policyValidation.getErrors();

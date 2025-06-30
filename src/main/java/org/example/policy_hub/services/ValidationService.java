@@ -1,6 +1,5 @@
 package org.example.policy_hub.services;
 
-import org.example.validation.Type;
 import org.example.validation.Validator;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,6 @@ public class ValidationService {
     }
 
     public List<String> validate(String policy) {
-        return validator.validate(policy, Type.JSON);
+        return validator.validate(policy);
     }
 }

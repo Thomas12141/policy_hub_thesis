@@ -1,6 +1,5 @@
 package org.example.validation.semantic_validation;
 
-import org.example.validation.Type;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -32,7 +31,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("Membership must not appear in duty");
@@ -58,7 +57,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("Membership must not appear in prohibition");
@@ -84,7 +83,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("Membership rightOperand must be ACTIVE");
@@ -111,7 +110,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).isEmpty();
@@ -137,7 +136,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).isEmpty();
@@ -163,7 +162,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("LocationPolicy: Location must be a valid ISO country code");
@@ -189,7 +188,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).isEmpty();
@@ -215,7 +214,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("CountPolicy: NumberOfTransfers must be a positive integer");
@@ -241,7 +240,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("CountPolicy: NumberOfTransfers must be less than or equal to");
@@ -267,7 +266,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).isEmpty();
@@ -298,7 +297,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("TimeFramePolicy: Start date must be before end date");
@@ -324,7 +323,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("TimeFramePolicy: Right operand must be a date in ISO 8601 format");
@@ -350,7 +349,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).isEmpty();
@@ -376,7 +375,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must be a positive number");
@@ -402,7 +401,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must be a positive number");
@@ -428,7 +427,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must appear in duty");
@@ -454,7 +453,7 @@ class SemanticValidationTest {
             }""";
 
         //Act
-        List<String> errors = validator.validate(policy, Type.JSON);
+        List<String> errors = validator.validate(policy);
 
         //Assert
         assertThat(errors).hasSize(1).contains("BillingPolicy: Payment must appear in duty");

@@ -15,12 +15,12 @@ public class ParallelPolicyValidator implements Validator {
     private static final Set<Validator> validators = Set.of(new SyntaxValidator(), new SemanticValidator());
 
     @Override
-    public List<String> validate(String policy, Type type) {
+    public List<String> validate(String policy) {
         if (policy == null) {
             return List.of("Policy is null");
         }
         List<CompletableFuture<List<String>>> futures = validators.stream()
-                .map(v -> CompletableFuture.supplyAsync(() -> v.validate(policy, type)).exceptionally(ex -> {
+                .map(v -> CompletableFuture.supplyAsync(() -> v.validate(policy)).exceptionally(ex -> {
                     logger.error("Error while validating policy", ex);
                     return List.of("Internal server error");
                 }))
