@@ -1,5 +1,6 @@
 package org.example.policy_hub.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.policy_hub.entities.JarEntity;
@@ -25,12 +26,18 @@ public class JarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ObjectNode>> listAllJars() {
+    public ResponseEntity<String> listAllJars() {
         ObjectMapper mapper = new ObjectMapper();
         List<JarEntity> jars = jarService.getAllJars();
         List<ObjectNode> jsonNodes = jars.stream().map(mapper::valueToTree).map(node -> (ObjectNode) node).toList();
         jsonNodes.forEach(jsonNode -> jsonNode.remove("filePath"));
-        return ResponseEntity.ok(jsonNodes);
+        String responseJson;
+        try {
+            responseJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNodes);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(responseJson);
     }
 
     @GetMapping("/download/{moduleName}")

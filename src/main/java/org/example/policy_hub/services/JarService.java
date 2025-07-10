@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import org.example.JarPackager;
 import org.example.policy_hub.entities.JarEntity;
 import org.example.policy_hub.repositories.JarRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,15 @@ import java.util.stream.Stream;
 
 @Service
 public class JarService {
-
+    Logger logger = LoggerFactory.getLogger(JarService.class);
     private final Map<String, String> moduleToDescription = Map.of("AccessPolicy",
-            "grants for one or many defined participants access, every participant must have an id defined, the policy " +
+            "Grants for one or many defined participants access, every participant must have an id defined, the policy " +
                     "lets the provider to define several participants as allowed to access the asset.",
-            "IsDataspaceMember","checks if the connector a participant of the dataspace.");
+            "IsDataspaceMember","Checks if the connector is a participant of the dataspace.",
+            "BillingPolicy", "Checks if the needed amount for the asset have been paid.",
+            "LocationPolicy", "Checks if the asset is located in the defined region.",
+            "TimeFramePolicy", "Checks if the timepoint is in the right frame.",
+            "CountPolicy", "Checks if the number of the transfers is under the allowed border.");
 
     private final JarRepository repository;
 
