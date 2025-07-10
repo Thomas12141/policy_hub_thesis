@@ -7,8 +7,6 @@ import java.nio.file.Paths;
 import org.example.JarPackager;
 import org.example.policy_hub.entities.JarEntity;
 import org.example.policy_hub.repositories.JarRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,6 @@ import java.util.stream.Stream;
 
 @Service
 public class JarService {
-    Logger logger = LoggerFactory.getLogger(JarService.class);
     private final Map<String, String> moduleToDescription = Map.of("AccessPolicy",
             "Grants for one or many defined participants access, every participant must have an id defined, the policy " +
                     "lets the provider to define several participants as allowed to access the asset.",
