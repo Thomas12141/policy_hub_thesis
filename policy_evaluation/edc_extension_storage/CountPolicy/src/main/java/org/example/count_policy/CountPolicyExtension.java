@@ -1,13 +1,14 @@
 package org.example.count_policy;
 
+import de.example.policy_dataplane.PolicyEvaluator;
+import de.example.policy_dataplane.ProxyPipelineService;
 import org.eclipse.edc.connector.controlplane.contract.spi.policy.TransferProcessPolicyContext;
-import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessListener;
+import org.eclipse.edc.connector.controlplane.services.spi.contractagreement.ContractAgreementService;
 import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessObservable;
-import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
-import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type;
+import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
+import org.eclipse.edc.participant.spi.ParticipantAgentService;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
-import org.eclipse.edc.policy.model.Duty;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.monitor.Monitor;
@@ -23,6 +24,9 @@ public class CountPolicyExtension implements ServiceExtension {
     private static final String COUNT_CONSTRAINT_KEY = EDC_NAMESPACE + "NumberOfTransfers";
 
     @Inject
+    private PipelineService pipelineService;
+
+    @Inject
     private PolicyEngine policyEngine;
 
     @Inject
@@ -30,6 +34,12 @@ public class CountPolicyExtension implements ServiceExtension {
 
     @Inject
     private TransferProcessObservable transferProcessObservable;
+
+    @Inject
+    ContractAgreementService contractAgreementService;
+
+    @Inject
+    private ParticipantAgentService participantAgentService;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
@@ -41,21 +51,12 @@ public class CountPolicyExtension implements ServiceExtension {
         bindingRegistry.bind(COUNT_CONSTRAINT_KEY, TransferProcessPolicyContext.TRANSFER_SCOPE);
         policyEngine.registerFunction(TransferProcessPolicyContext.class, Permission.class,
             COUNT_CONSTRAINT_KEY, function);
-        registerTransferProcessListener(InMemoryCounter.getInstance(), context);
-    }
 
-    private void registerTransferProcessListener(
-        TransferCounter transferCounter, ServiceExtensionContext context) {
-        transferProcessObservable.registerListener(
-            new TransferProcessListener() {
-                @Override
-                public void preTerminated(TransferProcess process) {
-                    var assetId = process.getAssetId();
-                    var participantId = context.getParticipantId();
-                    if (process.getType().equals(Type.PROVIDER)) {
-                        transferCounter.increment(new CounterKey(participantId, assetId));
-                    }
-                }
-            });
+        PolicyEvaluator policyEvaluator = new CountPolicyEvaluator(context, contractAgreementService);
+        if (pipelineService instanceof ProxyPipelineService) {
+            ((ProxyPipelineService) pipelineService).addPolicyValidator(policyEvaluator);
+        } else {
+            monitor.severe("Pipeline service is not an instance of ProxyPipelineService. Policy validation will not work.");
+        }
     }
 }

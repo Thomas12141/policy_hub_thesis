@@ -21,6 +21,7 @@ dependencies {
     api("org.eclipse.edc:json-ld-spi:0.13.0")
 
     implementation("org.eclipse.edc:control-plane-core:0.13.0")
+    implementation(project(":policy_evaluation:edc_extension_storage:policyDataplane"))
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
