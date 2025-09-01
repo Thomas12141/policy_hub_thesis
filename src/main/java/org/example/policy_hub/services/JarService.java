@@ -23,7 +23,11 @@ public class JarService {
     private final Map<String, String> moduleToDescription = Map.of("AccessPolicy",
             "grants for one or many defined participants access, every participant must have an id defined, the policy " +
                     "lets the provider to define several participants as allowed to access the asset.",
-            "IsDataspaceMember","checks if the connector a participant of the dataspace.");
+            "IsDataspaceMember","checks if the connector a participant of the dataspace.",
+            "BillingPolicy", "Enforces payment requirements for asset access",
+            "CountPolicy", "Limits the number of times an asset can be accessed",
+            "LocationPolicy", "Restricts asset access based on geographic location",
+            "TimeFramePolicy", "Defines specific time periods during which asset access is permitted");
 
     private final JarRepository repository;
 
